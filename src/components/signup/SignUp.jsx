@@ -1,49 +1,93 @@
 import { useState } from "react";
-import users from "../user/user";
-
-
+import { addUser, getUsers } from "../users/Users";
+import Navbar from '../navbarDefault/NavbarDefault';
+import Footer from '../footer/Footer'
+import './SignUp.css';
 
 const SignUp = () => {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [userName, setUserName] = useState('');
+    const [passWord, setPassWord] = useState('');
+    
 
-    const [SignUserName, setUserName] = useState('');
-    const [SignPassword, setPassword] = useState('');
+    const onSubmitHandler = () => {
 
-    const onSubmitHandler = (event) => {
-        event.preventDefault();
+        let encontrado = false;
+        const users = getUsers();
+        users.forEach(user => {
+            if (user.userName === userName) {
+                encontrado = true;
+                return;
+            }
+        });
 
-        const usersNames = users.reduce((AllUsers, user) => {
-            AllUsers.append(user.userName)
-            return AllUsers;
-        }, []);
-        
-        if (SignUserName in usersNames.userName || SignUserName.trim() === '' || SignPassword.trim()=== '') {
-            alert('Usuario inválido para registrarse');
-        }
-        else {
+        if (encontrado) {
+            alert('Nombre de usuario ya existente, elija otro');
+        } else {
+            const newUser = {
+                userName: userName,
+                passWord: passWord,
+                firstName: firstName,
+                lastName: lastName,
+                userId: users.length + 1,
+                isAdmin: false,
+            };
+
+            addUser(newUser);
+            console.log(users);
+
             alert('¡Usuario registrado correctamente!');
-            setUserName("");
-            setPassword("");
+            setFirstName('');
+            setLastName('');
+            setUserName('');
+            setPassWord('');
         }
-        
     }
-    return(
-        <div>
-            <form onSubmit={onSubmitHandler}>
-                <label>Nombre de Usuario: 
-                    <input type="text"
-                    value={SignUserName}
-                    onChange={(event) => setUserName(event.target.value)}>
-                    </input>
-                </label>
-                <label>Contraseña: 
-                    <input type="password"
-                    value={SignPassword}
-                    onChange={(event) => setPassword(event.target.value)}> 
-                    </input>
-                </label>
-                <button type="submit"> Registrarse </button>
-            </form>
-        </div>
+
+    return (
+        <>
+            <Navbar />
+            <div className="signup-container">
+                <h1 style={{textAlign: "center", margin: "50px"}}>Ingrese sus datos</h1>
+                <form onSubmit={onSubmitHandler} className="signup">
+                    <label>
+                        <p>Nombre:</p> 
+                        <input type="text"
+                            value={firstName}
+                            onChange={(event) => setFirstName(event.target.value)}
+                            required
+                        /> 
+                    </label>
+                    <label>
+                        <p>Apellido: </p>
+                        <input type="text"
+                            value={lastName}
+                            onChange={(event) => setLastName(event.target.value)}
+                            required
+                        /> 
+                    </label>
+                    <label>
+                        <p>Nombre de Usuario: </p>
+                        <input type="text"
+                            value={userName}
+                            onChange={(event) => setUserName(event.target.value)}
+                            required
+                        />
+                    </label>
+                    <label>
+                        <p>Contraseña: </p>
+                        <input type="password"
+                            value={passWord}
+                            onChange={(event) => setPassWord(event.target.value)}
+                            required
+                        /> 
+                    </label>
+                    <button type="submit"> Registrarse </button>
+                </form>
+            </div>
+            <Footer />
+        </>
     )
 };
 

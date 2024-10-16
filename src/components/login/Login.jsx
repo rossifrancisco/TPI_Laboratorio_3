@@ -1,38 +1,63 @@
 import { useState } from "react"
-import users from "../user/user";
-
-const [userName, setUserName] = useState("");
-const [password, setPassword] = useState("");
+import users from "../users/Users";
+import Navbar from '../navbarDefault/NavbarDefault';
+import Footer from '../footer/Footer'
+import './Login.css'
 
 const Login = () => {
 
-    const ButtonClick = () => {
+    const [userName, setUserName] = useState("");
+    const [passWord, setPassWord] = useState("");
+
+    const onSubmitHandler = () => {
+
+        let encontrado = false;
+
         users.forEach(user => {
-            if (user.userName === userName && user.password === password) {
-                // token de aca wacho
-            }});
+            if (user.userName === userName && user.passWord === passWord) {
+                encontrado = true;
+                return 
+            }
+        });
+
+        if (encontrado) {
+            alert("Bienvenido");
+        } else {
+            alert("usuario NO encontrado, Antes debe registrarse");
+            setUserName("");
+            setPassWord("");
+        }
     }
 
     return (
-        <div>
-            <label>
-                Nombre de Usuario:
-                <input 
-                    type="text"
-                    value={userName}
-                    onChange={(event) => setUsername(event.target.value)}
-                />
-            </label>
-            <label>
-                Contraseña:
-                <input 
-                    type="text"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                />
-            </label>
-            <button onClick={ButtonClick}>Ingresar</button>
-        </div>
+        <>
+            <Navbar />
+            <div className="login-container">
+                <h1 style={{textAlign: "center", margin: "50px"}}>Ingrese su cuenta</h1>
+                <form onSubmit={onSubmitHandler} className="login">
+                    <label className="field">
+                        <p>Nombre de Usuario:</p>
+                        <input 
+                            type="text"
+                            value={userName}
+                            onChange={(event) => setUserName(event.target.value)}
+                            required
+                        />
+                    </label>
+                    <label className="field">
+                        <p>Contraseña:</p>
+                        <input 
+                            type="password"
+                            value={passWord}
+                            onChange={(event) => setPassWord(event.target.value)}
+                            required
+                        />
+                    </label>
+                    <button type="submit">Ingresar</button>
+                </form>
+            </div>
+            <Footer />
+        </>
     )
 }
 

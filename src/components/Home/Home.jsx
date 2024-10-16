@@ -15,10 +15,10 @@ const Home = () => {
             <div style={{ textAlign: 'center', position: 'relative' }}>
                 <Image src={imageHero} fluid style={{ width: '100%' }} />
                 <div style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', color: 'white' }}>
-                    <h1>ENCONTRÁ TU LUGAR IDEAL</h1>
+                    <h1 style={{ fontSize: "48px"}}>ENCONTRÁ TU LUGAR IDEAL</h1>
                     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-                        <button style={{ marginRight: '10px' }} onClick={() => navigate('/buildings')}>Quiero alquilar</button> {/*//aca deberia llevarte a el mapeo de todos los inmuebles */}
-                        <button style={{ marginRight: '10px' }}>Quiero buscar</button>
+                        <button style={{ marginRight: '10px' }} onClick={() => navigate('/Rent')}>Quiero alquilar</button>
+                        <button style={{ marginRight: '10px' }} onClick={() => navigate('/Rent')}>Quiero buscar</button>
                         <button>Quiero publicar</button>
                     </div>
                 </div>
