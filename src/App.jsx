@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Home from './components/home/Home';
+import Home from './components/Home/Home';
 import Login from './components/login/Login';
 import SignUp from './components/signup/SignUp'
 import Rent from './components/rent/Rent';
@@ -11,6 +11,7 @@ function App() {
     { path: '/Login', element: <Login /> },
     { path: '/SignUp', element: <SignUp /> },
     { path: '/Rent', element: <Rent /> },
+
   ]);
 
   return (

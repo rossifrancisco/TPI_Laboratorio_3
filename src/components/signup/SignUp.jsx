@@ -3,8 +3,12 @@ import { addUser, getUsers } from "../users/Users";
 import Navbar from '../navbarDefault/NavbarDefault';
 import Footer from '../footer/Footer'
 import './SignUp.css';
+import { useAuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+    const {register} = useAuthContext();
+    const navigate = useNavigate();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [userName, setUserName] = useState('');
@@ -12,38 +16,30 @@ const SignUp = () => {
     
 
     const onSubmitHandler = () => {
+        event.preventDefault();
 
-        let encontrado = false;
-        const users = getUsers();
-        users.forEach(user => {
-            if (user.userName === userName) {
-                encontrado = true;
-                return;
-            }
-        });
+        const newUser = {
+            userName: userName,
+            passWord: passWord,
+            FirstName: firstName,
+            lastName: lastName,
+            userId: getUsers().length + 1,
+            isAdmin: false,
+        };
 
-        if (encontrado) {
-            alert('Nombre de usuario ya existente, elija otro');
-        } else {
-            const newUser = {
-                userName: userName,
-                passWord: passWord,
-                firstName: firstName,
-                lastName: lastName,
-                userId: users.length + 1,
-                isAdmin: false,
-            };
+        const success = register(newUser); 
 
-            addUser(newUser);
-            console.log(users);
-
+        if (success) {
             alert('¡Usuario registrado correctamente!');
             setFirstName('');
             setLastName('');
             setUserName('');
             setPassWord('');
+            navigate("/Appartment") //deberia redirigirte a crear el inmuebele!
+        } else {
+            alert('El nombre de usuario ya está en uso, elija otro.');
         }
-    }
+    };
 
     return (
         <>
