@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useState, useEffect } from "react"
 import Users, { addUser } from '../components/users/Users'
 
     
@@ -9,17 +9,22 @@ export const useAuthContext = () => {
 }
 
 export const AuthProvider = ({ children }) => {
-
-    const [auth, setAuth] = useState({
-        loggedIn: false,
+    const getStoredAuth = () => JSON.parse(localStorage.getItem("auth")) || { 
+        loggedIn: false, 
         userId: null,
-
-    })
-
+        username: null,
+        email: null,
+        firstName: null,
+        lastName: null
+    };
+    const [auth, setAuth] = useState(getStoredAuth);
     const [error, setError] = useState({})
 
-    const login = (values) => {
-        const {username, password} = values;
+    useEffect(() => {
+        localStorage.setItem("auth", JSON.stringify(auth));
+    }, [auth]);
+
+    const login = ({ username, password }) => {
         setError({});
 
         const match = Users.find((user) => user.userName === username)
@@ -28,7 +33,11 @@ export const AuthProvider = ({ children }) => {
             if (match.passWord === password) {
                 setAuth({
                     loggedIn: true,
-                    userId: match.userId
+                    userId: match.userId,
+                    username: username,
+                    mail: match.email, // Agregar email
+                    firstName: match.FirstName, // Agregar nombre
+                    lastName: match.lastName // Agregar apellido
                 })
             } else {
                 setError({
@@ -49,14 +58,20 @@ export const AuthProvider = ({ children }) => {
             addUser(newUser); 
             return true; 
         }
+        setError({ username: "Usuario ya existe" });
         return false;
     };
 
     const logout = () => {
         setAuth({
             loggedIn: false,
-            userId: null
+            userId: null,
+            username: null,
+            email: null,
+            firstName: null,
+            lastName: null
         })
+        localStorage.removeItem("auth");
     }
             
          
@@ -67,5 +82,3 @@ export const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     )
 }
-    
- 
