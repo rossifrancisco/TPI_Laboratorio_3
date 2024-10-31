@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import emailjs from 'emailjs-com';
 import NavbarDefault from '../navbarDefault/NavbarDefault';
 import Swal from 'sweetalert2';
+import Footer from '../footer/Footer';
 
 const Contact = () => {
     const [formData, setFormData] = useState({

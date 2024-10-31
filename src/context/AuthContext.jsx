@@ -1,14 +1,17 @@
 import { createContext, useContext, useState, useEffect } from "react"
 import Users, { addUser } from '../components/users/Users'
 
-    
 export const AuthContext = createContext()
 
 export const useAuthContext = () => {
     return useContext(AuthContext)
 }
 
+const getStoredUsers = () => JSON.parse(localStorage.getItem("users")) || [];
+
 export const AuthProvider = ({ children }) => {
+    const [users, setUsers] = useState(getStoredUsers());
+
     const getStoredAuth = () => JSON.parse(localStorage.getItem("auth")) || { 
         loggedIn: false, 
         userId: null,
@@ -35,9 +38,9 @@ export const AuthProvider = ({ children }) => {
                     loggedIn: true,
                     userId: match.userId,
                     username: username,
-                    mail: match.email, // Agregar email
-                    firstName: match.FirstName, // Agregar nombre
-                    lastName: match.lastName // Agregar apellido
+                    mail: match.email, 
+                    firstName: match.FirstName, 
+                    lastName: match.lastName,
                 })
             } else {
                 setError({
@@ -52,15 +55,24 @@ export const AuthProvider = ({ children }) => {
 
     }
 
+    const addUser = (newUser) => {
+        Users.push(newUser);
+        localStorage.setItem("users", JSON.stringify(Users));
+    };
+    
+
     const register = (newUser) => {
-        const match = Users.find((user) => user.userName === newUser.userName); 
+        const match = users.find((user) => user.userName === newUser.userName);
         if (!match) {
-            addUser(newUser); 
-            return true; 
+            addUser(newUser);
+            setUsers((prev) => [...prev, newUser]);
+            return true;
         }
         setError({ username: "Usuario ya existe" });
         return false;
     };
+
+    
 
     const logout = () => {
         setAuth({

@@ -4,14 +4,14 @@ import Navbar from '../navbarDefault/NavbarDefault';
 import Footer from '../footer/Footer'
 import './Rent.css'
 
-const Rent = () => {
+const Rent = ({ propertys }) => {
 
     return (
         <>
             <Navbar />
             <h1 style={{textAlign: "center", margin: "50px"}}>Todos los inmuebles</h1>
             <main className="all-rents-grid">
-                {Buildings.map(build => (
+                {propertys.map(build => (
                     <RentCard 
                         key={build.id}
                         ubication={build.ubication}
