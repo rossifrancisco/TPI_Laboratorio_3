@@ -14,6 +14,7 @@ const Rent = ({ propertys }) => {
                 {propertys.map(build => (
                     <RentCard 
                         key={build.id}
+                        id={build.id}  
                         ubication={build.ubication}
                         type={build.type}
                         address={build.address}

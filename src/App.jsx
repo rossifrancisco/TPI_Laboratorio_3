@@ -8,6 +8,7 @@ import Private from './components/routes/Private';
 import Contact from './components/contact/Contact';
 import { useState } from 'react';
 import Buildings from './components/buildings/Buildings';
+import ApartmentCard from './components/apartment/ApartmentCard';
 
 function App() {
   const [propertys, setPropertys] = useState(Buildings); 
@@ -34,6 +35,14 @@ function App() {
         </Private>
       ),
     },
+    {
+      path: "/ApartmentCard/:id",
+      element: (
+        <Private>
+          <ApartmentCard properties={propertys} />
+        </Private>
+      ),
+    }
 
   ]);
 

@@ -1,7 +1,12 @@
 import './RentCard.css'
+import { useNavigate } from 'react-router-dom';
 
 const RentCard = ({ubication, type, id, address, bathrooms, rooms, garage, backyard, pictures, description, rating, price, isAuthorized, userId}) => {
+    const navigate = useNavigate();
 
+    const handleCardClick = () => {
+        navigate(`/ApartmentCard/${id}`);
+    };
     const haveGarage = (garage) => {
         if (garage) {
             return "con Garage"
@@ -19,7 +24,7 @@ const RentCard = ({ubication, type, id, address, bathrooms, rooms, garage, backy
     }
 
     return (
-        <div className="rent-card">
+        <div className="rent-card" onClick={handleCardClick}>
             <img className="rent-card-image" src={pictures[0]} alt="Imagen del inmueble" />
             <div className="rent-card-info">
                 <p>{type} de {ubication} en {address}</p>

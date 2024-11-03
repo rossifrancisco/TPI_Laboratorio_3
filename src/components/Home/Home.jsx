@@ -2,6 +2,7 @@ import Image from 'react-bootstrap/Image';
 import Navbar from '../navbarDefault/NavbarDefault';
 import Footer from '../footer/Footer'
 import { useNavigate } from 'react-router-dom'
+import { Button } from 'react-bootstrap';
 
 const Home = () => {
     const imageHero = 'https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
@@ -16,9 +17,9 @@ const Home = () => {
                 <div style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', color: 'white' }}>
                     <h1 style={{ fontSize: "48px"}}>ENCONTRÁ TU LUGAR IDEAL</h1>
                     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-                        <button style={{ marginRight: '10px' }} onClick={() => navigate('/Rent')}>Quiero alquilar</button>
-                        <button style={{ marginRight: '10px' }} onClick={() => navigate('/Rent')}>Quiero buscar</button>
-                        <button style={{ marginRight: '10px' }} onClick={() => navigate('/CreateProperty')}>Quiero publicar</button>
+                        <Button variant="dark" style={{ marginRight: '10px' }} onClick={() => navigate('/Rent')}>Quiero alquilar</Button>
+                        <Button variant="dark" style={{ marginRight: '10px' }} onClick={() => navigate('/Rent')}>Quiero buscar</Button>
+                        <Button variant="dark" style={{ marginRight: '10px' }} onClick={() => navigate('/CreateProperty')}>Quiero publicar</Button>
                     </div>
                 </div>
             </div>

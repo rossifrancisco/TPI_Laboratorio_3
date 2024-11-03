@@ -50,7 +50,7 @@ const Buildings = [
     {
         ubication: "Rosario",
         type: "Casa",
-        id: 1,
+        id: 4,
         address: "Avellaneda 500",
         bathrooms: 3,
         rooms: 2,
@@ -66,7 +66,7 @@ const Buildings = [
     {
         ubication: "Rosario",
         type: "Casa",
-        id: 2,
+        id: 5,
         address: "Avellaneda 500",
         bathrooms: 3,
         rooms: 2,
@@ -82,7 +82,7 @@ const Buildings = [
     {
         ubication: "Rosario",
         type: "Casa",
-        id: 3,
+        id: 6,
         address: "Avellaneda 500",
         bathrooms: 3,
         rooms: 2,
