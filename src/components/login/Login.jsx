@@ -12,6 +12,10 @@ const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
+    const handleProfile = () => {
+        navigate("/user"); 
+    }
+
     const onSubmitHandler = (event) => {
         event.preventDefault();
         login({ username, password });
@@ -31,8 +35,7 @@ const Login = () => {
                 {auth.loggedIn ? (
                     <div>
                         <h4>Estás logueado como: {auth.firstName} {auth.lastName}</h4>
-                        <h5>Rol: {auth.role}</h5>
-                        <Button onClick={logout}>Cerrar sesión</Button>
+                        <Button onClick={handleProfile}>Ir al perfil</Button>
                     </div>
                 ) : (
                     <>

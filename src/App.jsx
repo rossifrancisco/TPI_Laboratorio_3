@@ -9,6 +9,7 @@ import Contact from './components/contact/Contact';
 import { useState } from 'react';
 import Buildings from './components/buildings/Buildings';
 import ApartmentCard from './components/apartment/ApartmentCard';
+import UserCard from './components/user/UserCard';
 
 function App() {
   const [propertys, setPropertys] = useState(Buildings); 
@@ -47,7 +48,15 @@ function App() {
           <ApartmentCard properties={propertys} />
         </Private>
       ),
-    }
+    },
+    {
+      path: "/user", 
+      element: (
+        <Private> 
+            <UserCard />
+        </Private>
+      ),
+    },
 
   ]);
 
