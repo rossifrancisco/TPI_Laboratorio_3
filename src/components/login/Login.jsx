@@ -31,6 +31,7 @@ const Login = () => {
                 {auth.loggedIn ? (
                     <div>
                         <h4>Estás logueado como: {auth.firstName} {auth.lastName}</h4>
+                        <h5>Rol: {auth.role}</h5>
                         <Button onClick={logout}>Cerrar sesión</Button>
                     </div>
                 ) : (

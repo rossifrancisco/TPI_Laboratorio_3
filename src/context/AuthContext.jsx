@@ -18,7 +18,8 @@ export const AuthProvider = ({ children }) => {
         username: null,
         email: null,
         firstName: null,
-        lastName: null
+        lastName: null,
+        role: null,
     };
     const [auth, setAuth] = useState(getStoredAuth);
     const [error, setError] = useState({})
@@ -30,7 +31,7 @@ export const AuthProvider = ({ children }) => {
     const login = ({ username, password }) => {
         setError({});
 
-        const match = Users.find((user) => user.userName === username)
+        const match = users.find((user) => user.userName === username)
 
         if (match) {
             if (match.passWord === password) {
@@ -41,6 +42,7 @@ export const AuthProvider = ({ children }) => {
                     mail: match.email, 
                     firstName: match.FirstName, 
                     lastName: match.lastName,
+                    role: match.role,
                 })
             } else {
                 setError({
@@ -81,7 +83,8 @@ export const AuthProvider = ({ children }) => {
             username: null,
             email: null,
             firstName: null,
-            lastName: null
+            lastName: null,
+            role: null,
         })
         localStorage.removeItem("auth");
     }

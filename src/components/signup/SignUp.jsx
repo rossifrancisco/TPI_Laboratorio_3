@@ -7,6 +7,7 @@ import { useAuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 
 const SignUp = () => {
     const {register, auth, logout} = useAuthContext();
@@ -15,10 +16,21 @@ const SignUp = () => {
     const [lastName, setLastName] = useState('');
     const [userName, setUserName] = useState('');
     const [passWord, setPassWord] = useState('');
-    
+    const [role, setRole] = useState(null);
+
 
     const onSubmitHandler = () => {
         event.preventDefault();
+
+        if (!role) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Por favor seleccione un rol (Tenant o Owner).',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+            return;
+        }
 
         const newUser = {
             userName: userName,
@@ -26,7 +38,7 @@ const SignUp = () => {
             FirstName: firstName,
             lastName: lastName,
             userId: getUsers().length + 1,
-            isAdmin: false,
+            role: role,
         };
 
         const success = register(newUser); 
@@ -106,6 +118,18 @@ const SignUp = () => {
                                     required
                                 />
                             </label>
+                            <Form.Group controlId="roleSelect">
+                                <Form.Control
+                                    as="select"
+                                    value={role || ""}
+                                    onChange={(event) => setRole(event.target.value)}
+                                    required
+                                >
+                                    <option value="" disabled>Seleccione un rol</option>
+                                    <option value="tenant">Inquilino</option>
+                                    <option value="owner">Propietario</option>
+                                </Form.Control>
+                            </Form.Group>
                             <button type="submit"> Registrarse </button>
                         </form>
                     </div>

@@ -15,18 +15,28 @@ const NavbarDefault = () => {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div className="navbar-nav ms-auto">
-                        <a className="nav-link" href="/Contact">CONTACTO</a>
-                        <a className="nav-link" href="/Login">LOGIN</a>
-                        <a className="nav-link" href="/SignUp">SIGN UP</a>
-                        {
-                            auth.loggedIn && (
-                                <>
-                                    <a className="nav-link" href="/rent">ALQUILER</a>
-                                    <a className="nav-link" href="/CreateProperty">SUBIR INMUEBLE</a> 
-                                </>
-                            )
+                        
+                        {!auth.loggedIn ? (
+                            <>
+                                <a className="nav-link" href="/">INICIO</a>
+                                <a className="nav-link" href="/Contact">CONTACTO</a>
+                                <a className="nav-link" href="/Login">LOGIN</a>
+                                <a className="nav-link" href="/SignUp">SIGN UP</a>
+                            </>
+                        ) : (
+                            <>
+                                <a className="nav-link" href="/">INICIO</a>
+                                <a className="nav-link" href="/Contact">CONTACTO</a>
                                
-                        }
+                                {auth.role === 'owner' && (
+                                    <a className="nav-link" href="/CreateProperty">SUBIR INMUEBLE</a>
+                                )}
+                                {auth.role === 'tenant' && (
+                                    <a className="nav-link" href="/rent">ALQUILER</a>
+                                )}
+                                <a className="nav-link" href="/Login">LOGIN</a>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
