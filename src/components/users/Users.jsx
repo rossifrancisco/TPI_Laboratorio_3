@@ -30,7 +30,7 @@ let Users = [
         FirstName: "Nicolas",
         lastName: "Garcia",
         userId: 1,
-        isAdmin: false,
+        isAdmin: false, // da pq no soy admin yo :(
     },
     {
         userName: "Geral",

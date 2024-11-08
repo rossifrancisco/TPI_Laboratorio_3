@@ -1,99 +1,84 @@
-import { createContext, useContext, useState, useEffect } from "react"
-import Users, { addUser } from '../components/users/Users'
+import { createContext, useContext, useState, useEffect } from "react";
+import { loginUser, registerUser, logoutUser} from "../services/AuthService";
 
-export const AuthContext = createContext()
+export const AuthContext = createContext();
 
 export const useAuthContext = () => {
-    return useContext(AuthContext)
-}
+  return useContext(AuthContext);
+};
 
-const getStoredUsers = () => JSON.parse(localStorage.getItem("users")) || [];
+const getStoredAuth = () => JSON.parse(localStorage.getItem("auth")) || { 
+  loggedIn: false, 
+  userId: null,
+  username: null,
+  email: null,
+  firstName: null,
+  lastName: null,
+  role: null,
+  token: null,
+};
 
 export const AuthProvider = ({ children }) => {
-    const [users, setUsers] = useState(getStoredUsers());
-
-    const getStoredAuth = () => JSON.parse(localStorage.getItem("auth")) || { 
-        loggedIn: false, 
-        userId: null,
-        username: null,
-        email: null,
-        firstName: null,
-        lastName: null,
-        role: null,
-    };
-    const [auth, setAuth] = useState(getStoredAuth);
-    const [error, setError] = useState({})
-
-    useEffect(() => {
-        localStorage.setItem("auth", JSON.stringify(auth));
-    }, [auth]);
-
-    const login = ({ username, password }) => {
-        setError({});
-
-        const match = users.find((user) => user.userName === username)
-
-        if (match) {
-            if (match.passWord === password) {
-                setAuth({
-                    loggedIn: true,
-                    userId: match.userId,
-                    username: username,
-                    mail: match.email, 
-                    firstName: match.FirstName, 
-                    lastName: match.lastName,
-                    role: match.role,
-                })
-            } else {
-                setError({
-                    password: "Password incorrecto"
-                })
-            }
-        } else {
-            setError({
-                username: "Usuario no encontrado"
-            })
-        }
-
+  const [auth, setAuth] = useState(getStoredAuth);
+  const [error, setError] = useState({});
+  
+  useEffect(() => {
+    if (auth.loggedIn) {
+      localStorage.setItem("auth", JSON.stringify(auth));
+    } else {
+      localStorage.removeItem("auth");
     }
+  }, [auth]);
 
-    const addUser = (newUser) => {
-        Users.push(newUser);
-        localStorage.setItem("users", JSON.stringify(Users));
-    };
+  const login = async ({ username, password }) => {
+    setError({});
     
+    try {
+      const data = await loginUser(username, password);
+      const { user } = data;
 
-    const register = (newUser) => {
-        const match = users.find((user) => user.userName === newUser.userName);
-        if (!match) {
-            addUser(newUser);
-            setUsers((prev) => [...prev, newUser]);
-            return true;
-        }
-        setError({ username: "Usuario ya existe" });
-        return false;
-    };
-
-    
-
-    const logout = () => {
-        setAuth({
-            loggedIn: false,
-            userId: null,
-            username: null,
-            email: null,
-            firstName: null,
-            lastName: null,
-            role: null,
-        })
-        localStorage.removeItem("auth");
+      setAuth({
+        loggedIn: true,
+        userId: user.userId,
+        username: user.username,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role,
+      });
+    } catch (error) {
+      setError({
+        username: error.message || "Error en la autenticación",
+      });
     }
-            
-         
-    
-    return (
-        <AuthContext.Provider value={{auth, setAuth, error, login, logout, register}}>
-            {children}
-        </AuthContext.Provider>
-    )
-}
+  };
+
+  const register = async (newUser) => {
+    try {
+      const data = await registerUser(newUser);
+      return true;
+    } catch (error) {
+      setError({ username: error.message });
+      return false;
+    }
+  };
+
+  const logout = () => {
+    logoutUser();
+    setAuth({
+      loggedIn: false,
+      userId: null,
+      username: null,
+      email: null,
+      firstName: null,
+      lastName: null,
+      role: null,
+    });
+  };
+
+  return (
+    <AuthContext.Provider value={{ auth, setAuth, error, login, logout, register }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
