@@ -3,7 +3,7 @@ const URL = "https://localhost:7095/api/";
 // Función para iniciar sesión
 export const loginUser = async (username, password) => {
   try {
-    const response = await fetch(`${URL}/login`, {
+    const response = await fetch(`${URL}Authentication/authenticate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,9 +23,9 @@ export const loginUser = async (username, password) => {
 };
 
 
-export const registerUser = async (newUser) => {
+const register = async (newUser, endpoint) => {
   try {
-    const response = await fetch(`${URL}/registro`, {
+    const response = await fetch(URL + endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,6 +43,10 @@ export const registerUser = async (newUser) => {
     throw new Error(error.message || "Error al conectar con el servidor");
   }
 };
+
+export const registerAdmin = (admin) => register(admin, "Admin/create");
+export const registerOwner = (owner) => register(owner, "Owner/create");
+export const registerTenant = (tenant) => register(tenant, "Tenant/create");
 
 // Función para cerrar sesión
 export const logoutUser = () => {
