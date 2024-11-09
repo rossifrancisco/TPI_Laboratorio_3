@@ -5,7 +5,7 @@ import NavbarDefault from '../navbarDefault/NavbarDefault';
 import Swal from 'sweetalert2'; 
 
 const UserCard = () => {
-    const { auth, setAuth, logout} = useAuthContext();
+    const { auth, setAuth, logout } = useAuthContext();
     const [isOpen, setIsOpen] = useState(false)
 
     const handleInputChange = (e) => {

@@ -16,10 +16,10 @@ const SignUp = () => {
     const [lastName, setLastName] = useState('');
     const [userName, setUserName] = useState('');
     const [passWord, setPassWord] = useState('');
+    const [email, setEmail] = useState('');
     const [role, setRole] = useState(null);
 
-
-    const onSubmitHandler = () => {
+    const onSubmitHandler = (event) => {
         event.preventDefault();
 
         if (!role) {
@@ -33,17 +33,18 @@ const SignUp = () => {
         }
 
         const newUser = {
-            userName: userName,
-            passWord: passWord,
-            FirstName: firstName,
-            lastName: lastName,
-            userId: getUsers().length + 1,
+            username: userName,
+            password: passWord,
+            name: firstName,
+            lastname: lastName,
+            email: email,
+            photo: photo || null,
             role: role,
         };
 
-        const success = register(newUser); 
+        const user = register(newUser); 
 
-        if (success) {
+        if (user) {
             Swal.fire({
                 title: '¡Éxito!',
                 text: '¡Usuario registrado correctamente!',
@@ -53,6 +54,7 @@ const SignUp = () => {
                 setFirstName('');
                 setLastName('');
                 setUserName('');
+                setEmail('');
                 setPassWord('');
                 navigate("/Login"); // Redirigir a crear el inmueble
             });
@@ -106,6 +108,15 @@ const SignUp = () => {
                                     type="text"
                                     value={userName}
                                     onChange={(event) => setUserName(event.target.value)}
+                                    required
+                                />
+                            </label>
+                            <label>
+                                <p>Email: </p>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(event) => setEmail(event.target.value)}
                                     required
                                 />
                             </label>

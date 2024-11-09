@@ -7,7 +7,7 @@ import { useAuthContext } from "../../context/AuthContext";
 import { Button } from "react-bootstrap";
 
 const Login = () => {
-    const { login, error, auth, logout } = useAuthContext();
+    const { login, auth, error } = useAuthContext();
     const navigate = useNavigate(); 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -16,14 +16,16 @@ const Login = () => {
         navigate("/user"); 
     }
 
-    const onSubmitHandler = (event) => {
+    const onSubmitHandler = async (event) => {
         event.preventDefault();
-        login({ username, password });
-        console.log(username, password)
-        if (auth.loggedIn) {
-            navigate("/rent"); 
+        const credentials = {
+            username: username,
+            password: password
         }
-        
+        const response = await login(credentials);
+        if (response){
+            navigate("/rent");
+        }
     };
 
     //aca podemos hacer q si esta loggedIn, te muestre tus datos de usuario, y te deje cerrar sesion
