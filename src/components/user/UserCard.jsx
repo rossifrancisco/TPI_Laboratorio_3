@@ -1,32 +1,65 @@
 import { useState } from 'react'
 import { Button, Modal, Form, Card } from 'react-bootstrap'
-import { useAuthContext } from '../../context/AuthContext'
+import { AuthContext, useAuthContext } from '../../context/AuthContext'
 import NavbarDefault from '../navbarDefault/NavbarDefault';
-import Swal from 'sweetalert2'; 
+import Swal from 'sweetalert2';
 
 const UserCard = () => {
-    const { auth, setAuth, logout } = useAuthContext();
-    const [isOpen, setIsOpen] = useState(false)
+    const { auth, setAuth, logout, updateUserProfile } = useAuthContext();
+    const [isOpen, setIsOpen] = useState(false);
+    
+    // Estado local para los datos del formulario
+    const [formData, setFormData] = useState({
+        username: auth.username || '',
+        email: auth.email || '',
+        firstName: auth.firstName || '',
+        lastName: auth.lastName || '',
+        role: auth.role || ''
+    });
 
+    // Actualizar el estado local
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setAuth(prevAuth => ({
-            ...prevAuth,
+        setFormData(prevFormData => ({
+            ...prevFormData,
             [name]: value
         }));
     }
 
-    const handleSubmit = (e) => {
+    // Al enviar el formulario, actualizar auth en el contexto
+    const handleSubmit = async (e) => {  // Hacer esta función asíncrona
         e.preventDefault();
-        setIsOpen(false);
-
-        Swal.fire({
-            title: '¡Éxito!',
-            text: 'Tu perfil ha sido actualizado con éxito.',
-            icon: 'success',
+    
+        try {
+          const success = await updateUserProfile(formData, `/api/${formData.role}/update/${auth.userId}`);  // Asegúrate de usar await aquí
+    
+          if (success) {
+            setIsOpen(false);
+            Swal.fire({
+              title: '¡Éxito!',
+              text: 'Tu perfil ha sido actualizado.',
+              icon: 'success',
+              confirmButtonText: 'OK',
+            });
+          }
+        } catch (error) {
+          console.error("Error al actualizar el perfil:", error);
+          Swal.fire({
+            title: 'Error',
+            text: error.message || "No se pudo actualizar el perfil",
+            icon: 'error',
             confirmButtonText: 'OK'
-        });
-    }
+          });
+        }
+    
+        // Actualizar auth con formData
+        setAuth(prevAuth => ({
+          ...prevAuth,
+          ...formData
+        }));
+    
+        setIsOpen(false);  // Cerrar el modal después de la actualización
+      };
 
     return (
         <>
@@ -62,7 +95,7 @@ const UserCard = () => {
                                     <Form.Control
                                         type="text"
                                         name="username"
-                                        value={auth.username || ''}
+                                        value={formData.username}
                                         onChange={handleInputChange}
                                     />
                                 </Form.Group>
@@ -71,7 +104,7 @@ const UserCard = () => {
                                     <Form.Control
                                         type="email"
                                         name="email"
-                                        value={auth.email || ''}
+                                        value={formData.email}
                                         onChange={handleInputChange}
                                     />
                                 </Form.Group>
@@ -80,7 +113,7 @@ const UserCard = () => {
                                     <Form.Control
                                         type="text"
                                         name="firstName"
-                                        value={auth.firstName || ''}
+                                        value={formData.firstName}
                                         onChange={handleInputChange}
                                     />
                                 </Form.Group>
@@ -89,7 +122,7 @@ const UserCard = () => {
                                     <Form.Control
                                         type="text"
                                         name="lastName"
-                                        value={auth.lastName || ''}
+                                        value={formData.lastName}
                                         onChange={handleInputChange}
                                     />
                                 </Form.Group>
@@ -98,19 +131,19 @@ const UserCard = () => {
                                     <Form.Control
                                         type="text"
                                         name="role"
-                                        value={auth.role || ''}
+                                        value={formData.role}
                                         onChange={handleInputChange}
                                     />
                                 </Form.Group>
                                 <Button variant="primary" type="submit">
                                     Guardar Cambios
                                 </Button>
+                                
                             </Form>
                         </Modal.Body>
                     </Modal>
                 </Card.Body>
             </Card>
-            
         </>
     )
 }

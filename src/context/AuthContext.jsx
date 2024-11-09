@@ -129,7 +129,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const data = { login, auth, error, user, logout, register };
+  const data = { login, auth, setAuth ,error, user, logout, register, updateUserProfile };
   return (
     <AuthContext.Provider value={data}>
       {children}
@@ -166,6 +166,7 @@ export const loginUser = async (username, password) => {
 
 const register = async (newUser, endpoint) => {
   try {
+    console.log(URL)
     const response = await fetch(URL + endpoint, {
       method: "POST",
       headers: {
@@ -185,9 +186,54 @@ const register = async (newUser, endpoint) => {
   }
 };
 
+const updateUserProfile = async (user, endpoint) => {
+
+
+  const updatedData = {
+    username: user.username,
+    password : user.password|| "string", //esto tuve que hardcodearlo sino tira 401 o 403 porque por parametro no recibimos el password
+    name: user.firstName,    //tiene que vincularse con lo que está en la base de datos, con lo que te pide el controlador del .net
+    lastname: user.lastName,
+    email: user.email,
+    photo : user.photo || "string", //esto tuve que hardcodearlo sino tira 401 o 403
+  };
+
+  const token = localStorage.getItem("token"); // O el nombre correcto de tu token en localStorage
+  console.log("Datos del usuario que se enviarán:", updatedData);
+  console.log (token)
+
+  try {
+    const BASE_URL = "https://localhost:7095"; //esto tuve que hacerlo para que me mande a la url, 
+                                              // cuando usaba URL como abajo no se por que me daba error
+    const fullUrl = `${BASE_URL}${endpoint}`;
+                                //podria ponerse fullUrl tmb en lugar de BASE_URL + endpoint
+    const response = await fetch(BASE_URL + endpoint, {  //si uso URL + endpoint me dice 404
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+       'Authorization': `Bearer ${token}` //sin esto da 401
+      },
+      body: JSON.stringify(updatedData),
+    });
+
+    if (!response.ok) {
+      const data = await response.text();
+      throw new Error(data.message || 'Error al actualizar el perfil');
+    }
+    return true;
+  } catch (error) {
+    console.error("Error al actualizar el perfil:", error);
+    throw new Error(error.message || 'Error al conectar con el servidor');
+  }
+};
+
+
 export const registerAdmin = (admin) => register(admin, "Admin/create");
 export const registerOwner = (owner) => register(owner, "Owner/create");
 export const registerTenant = (tenant) => register(tenant, "Tenant/create");
+export const updateAdminProfile = (admin) => updateUserProfile(admin, `Admin/update/${admin.id}`);
+export const updateTenantProfile = (tenant) => updateUserProfile(tenant, `Tenant/update/${tenant.id}`);
+export const updateOwnerProfile = (owner) => updateUserProfile(owner, `Owner/update/${owner.id}`);
 
 // Función para cerrar sesión
 export const logoutUser = () => {
