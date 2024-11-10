@@ -1,18 +1,26 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Home from './components/home/Home';
+import Home from './components/Home/Home';
 import Login from './components/login/Login';
 import SignUp from './components/signup/SignUp'
 import Rent from './components/rent/Rent';
 import CreateProperty from './components/property/CreateProperty';
 import Private from './components/routes/Private';
+import NotOwner from './components/routes/notOwner';
 import Contact from './components/contact/Contact';
 import { useState } from 'react';
-import Buildings from './components/buildings/Buildings';
 import ApartmentCard from './components/apartment/ApartmentCard';
 import UserCard from './components/user/UserCard';
+import { useAuthContext } from './context/AuthContext';
+import { useBuildingContext } from './context/BuildingContext';
+
 
 function App() {
-  const [propertys, setPropertys] = useState(Buildings); 
+
+  const [allAppartments, setAllAppartments] = useState([]);
+  
+  const { getAllAppartments } = useBuildingContext();
+  const appartments =  getAllAppartments();
+  const [propertys, setPropertys] = useState(appartments); 
 
   const savePropertDataHandler = (enteredPropertyData) => {
     const propertyData = {
@@ -36,9 +44,9 @@ function App() {
     {
       path: "/CreateProperty",
       element: (
-        <Private>
+        <NotOwner>
           <CreateProperty onPropertyDataSaved={savePropertDataHandler} />
-        </Private>
+        </NotOwner>
       ),
     },
     {

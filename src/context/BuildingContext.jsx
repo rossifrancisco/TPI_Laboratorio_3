@@ -1,6 +1,8 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 
 export const BuildingContext = createContext();
+
+export const useBuildingContext = () => useContext(BuildingContext);
 
 const BuildingContextProvider = ({ children }) => {
   const URL = "https://localhost:7095/api/"; //aca hay q hacer desde la api .net
@@ -8,11 +10,10 @@ const BuildingContextProvider = ({ children }) => {
 
   const getAllBuildings = async () => {
     try {
-      const response = await fetch(URL + "Building/GetAllBuildings", {
+      const response = await fetch(URL + "Building", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          accept: "*/*",
         },
       });
       if (!response.ok) throw new Error(`Error: ${response.status} - ${response.statusText}`);
@@ -31,7 +32,6 @@ const BuildingContextProvider = ({ children }) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          accept: "*/*",
         },
       });
       if (!response.ok) throw new Error(`Error: ${response.status} - ${response.statusText}`);
@@ -51,7 +51,6 @@ const BuildingContextProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${getToken()}`,
-          accept: "*/*",
         },
         body: JSON.stringify(building),
       });
@@ -72,7 +71,6 @@ const BuildingContextProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${getToken()}`,
-          accept: "*/*",
         },
         body: JSON.stringify(updatedBuilding),
       });
@@ -93,7 +91,6 @@ const BuildingContextProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${getToken()}`,
-          accept: "*/*",
         },
       });
       if (response.status === 204) return true;
@@ -106,12 +103,36 @@ const BuildingContextProvider = ({ children }) => {
     }
   };
 
+  const getAllAppartments = async () => {
+    try {
+      const response = await fetch(`${URL}Appartment/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Error al conseguir usuario");
+      }
+
+      const data = await response.json(); // respuesta de la API
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log(error);
+      throw new Error(error.message || "Error al conectar con el servidor");
+    }
+  };
+
   const data = {
     getAllBuildings,
     getBuildingById,
     createBuilding,
     updateBuilding,
     deleteBuilding,
+    getAllAppartments,
   };
 
   return (

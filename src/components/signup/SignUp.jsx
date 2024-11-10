@@ -11,6 +11,7 @@ import { Form } from "react-bootstrap";
 const SignUp = () => {
     const {register, auth, logout} = useAuthContext();
     const navigate = useNavigate();
+
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [userName, setUserName] = useState('');
@@ -138,8 +139,8 @@ const SignUp = () => {
                                     required
                                 >
                                     <option value="" disabled>Seleccione un rol</option>
-                                    <option value="tenant">Inquilino</option>
-                                    <option value="owner">Propietario</option>
+                                    <option value="Tenant">Inquilino</option>
+                                    <option value="Owner">Propietario</option>
                                 </Form.Control>
                             </Form.Group>
                             <button type="submit"> Registrarse </button>

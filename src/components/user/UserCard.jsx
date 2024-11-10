@@ -1,24 +1,25 @@
 import { useState } from 'react'
 import { Button, Modal, Form, Card } from 'react-bootstrap'
-import { AuthContext, useAuthContext } from '../../context/AuthContext'
+import { useAuthContext } from '../../context/AuthContext'
 import NavbarDefault from '../navbarDefault/NavbarDefault';
 import Swal from 'sweetalert2';
 import './userCard.css';
 
 const UserCard = () => {
-    const { auth, setAuth, logout, updateUserProfile } = useAuthContext();
+    const { auth, setAuth, logout, updateUserProfile, getData } = useAuthContext();
     const [isOpen, setIsOpen] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+
+    const userData = getData(auth.userId)
     
     // Estado local para los datos del formulario
     const [formData, setFormData] = useState({
-        username: auth.username || '',
-        email: auth.email || '',
-        password: auth.password || '',
-        firstName: auth.firstName || '',
-        lastName: auth.lastName || '',
-        photo: auth.photo || '',
-        role: auth.role || ''
+        username: userData.username || '',
+        email: userData.email || '',
+        password: userData.password || '',
+        firstName: userData.firstName || '',
+        lastName: userData.lastName || '',
+        photo: userData.photo || '',
     });
 
     // Actualizar el estado local
@@ -32,11 +33,11 @@ const UserCard = () => {
     }
 
     // Al enviar el formulario, actualizar auth en el contexto
-    const handleSubmit = async (e) => {  // Hacer esta función asíncrona
+    const handleSubmit = async (e) => {  
         e.preventDefault();
     
         try {
-          const success = await updateUserProfile(formData, `/api/${formData.role}/update/${auth.userId}`);  // Asegúrate de usar await aquí
+          const success = await updateUserProfile(formData, `/api/${formData.role}/update/${auth.userId}`); 
     
           if (success) {
             setIsOpen(false);

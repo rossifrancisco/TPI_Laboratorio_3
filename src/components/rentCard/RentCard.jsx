@@ -7,6 +7,7 @@ const RentCard = ({ubication, type, id, address, bathrooms, rooms, garage, backy
     const handleCardClick = () => {
         navigate(`/ApartmentCard/${id}`);
     };
+    
     const haveGarage = (garage) => {
         if (garage) {
             return "con Garage"

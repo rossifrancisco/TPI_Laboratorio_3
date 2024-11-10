@@ -1,28 +1,54 @@
 import { Button } from "react-bootstrap";
 import RentCard from "../rentCard/RentCard";
 import Navbar from '../navbarDefault/NavbarDefault';
-import Footer from '../footer/Footer'
-import './Rent.css'
-import { useState, useMemo } from "react";
+import Footer from '../footer/Footer';
+import './Rent.css';
+import { useState, useEffect } from "react";
 import Form from 'react-bootstrap/Form';
 import useFilterProperties from "../../hooks/useFilterProperties";
+import { useAuthContext } from "../../context/AuthContext";
+import { useBuildingContext } from "../../context/BuildingContext";
 
-const Rent = ({ propertys }) => {
-   const { bathrooms, setBathrooms, type, setType, rooms, setRooms, backyard, setBackyard, garage, 
-    setGarage, appliedFilters, handleSubmit, filteredProperties } = useFilterProperties();
+const Rent = () => {
+    /*
+    const appartments = getAllAppartments();
+    const [propertys, setPropertys] = useState(appartments);
 
+    const savePropertDataHandler = (enteredPropertyData) => {
+        const propertyData = {
+            ...enteredPropertyData,
+        };
+
+        setPropertys((prevProperties) => [propertyData, ...prevProperties]);
+    };
+    */
+    const { bathrooms, setBathrooms, floors, getFloors, rooms, setRooms, getBackyard, setBackyard, getGarage, setGarage, appliedFilters, handleSubmit, filteredProperties, setFilteredProperties } = useFilterProperties();
+    const { auth, setAuth } = useAuthContext();
+    const [allAppartments, setAllAppartments] = useState([]);
+    const { getAllAppartments } = useBuildingContext();
+    const appartments = getAllAppartments();
+    const [propertys, setPropertys] = useState(appartments);
+
+    useEffect(() => {
+        const fetchAppartments = async () => {
+            const appartments = await getAllAppartments();
+            setAllAppartments(appartments);
+            setFilteredProperties(allAppartments); // inicializa filteredProperties con todos los apartamentos
+        };
+        fetchAppartments();
+    }, []);
 
     return (
         <>
             <Navbar />
-            <h1 style={{textAlign: "center", margin: "50px"}}>Todos los inmuebles</h1>
+            <h1 style={{ textAlign: "center", margin: "50px" }}>Todos los inmuebles</h1>
 
             <div className="bg-white shadow-md rounded-lg p-4 mb-1 mx-auto">
                 <div className="filters d-flex justify-content-between">
                     <Form.Group controlId="bathrooms" className="w-30">
                         <Form.Label>Baños</Form.Label>
-                        <Form.Select 
-                            value={bathrooms} 
+                        <Form.Select
+                            value={bathrooms}
                             onChange={(e) => setBathrooms(e.target.value)}
                             className="w-100"
                         >
@@ -33,13 +59,12 @@ const Rent = ({ propertys }) => {
                         </Form.Select>
                     </Form.Group>
 
-                    <Form.Group controlId="rooms" className="w-30" style={{ m: 5}}>
+                    <Form.Group controlId="rooms" className="w-30" style={{ margin: "5px" }}>
                         <Form.Label>Habitaciones</Form.Label>
-                        <Form.Select 
-                            value={rooms} 
+                        <Form.Select
+                            value={rooms}
                             onChange={(e) => setRooms(e.target.value)}
                             className="w-100"
-                            style={{ m: 5}}
                         >
                             <option value="">Todos</option>
                             <option value="1">1</option>
@@ -48,10 +73,10 @@ const Rent = ({ propertys }) => {
                         </Form.Select>
                     </Form.Group>
 
-                    <Form.Group controlId="type" className="w-30" style={{ ml: 5}}>
+                    <Form.Group controlId="type" className="w-30" style={{ marginLeft: "5px" }}>
                         <Form.Label>Tipo</Form.Label>
-                        <Form.Select 
-                            value={type} 
+                        <Form.Select
+                            value={type}
                             onChange={(e) => setType(e.target.value)}
                             className="w-100"
                         >
@@ -60,6 +85,7 @@ const Rent = ({ propertys }) => {
                             <option value="depto">Departamento</option>
                         </Form.Select>
                     </Form.Group>
+
                     <Form.Group controlId="backyard" className="w-30">
                         <Form.Label>Patio</Form.Label>
                         <Form.Select
@@ -85,7 +111,7 @@ const Rent = ({ propertys }) => {
                             <option value="false">No</option>
                         </Form.Select>
                     </Form.Group>
-           
+
                     <Button
                         variant="dark"
                         onClick={handleSubmit}
@@ -94,17 +120,13 @@ const Rent = ({ propertys }) => {
                         Filtrar
                     </Button>
                 </div>
-                <div className="text-end mt-3">
-                    
-                </div>
             </div>
-          
 
             <main className="all-rents-grid">
                 {filteredProperties.map(build => (
-                    <RentCard 
+                    <RentCard
                         key={build.id}
-                        id={build.id}  
+                        id={build.id}
                         ubication={build.ubication}
                         type={build.type}
                         address={build.address}
@@ -121,6 +143,7 @@ const Rent = ({ propertys }) => {
                     />
                 ))}
             </main>
+
             <Footer />
         </>
     )

@@ -1,3 +1,4 @@
+/*
 const Buildings = [
     {
         ubication: "Rosario",
@@ -98,3 +99,4 @@ const Buildings = [
 ];
 
 export default Buildings;
+*/

@@ -5,6 +5,7 @@ import Footer from '../footer/Footer'
 import './Login.css'
 import { useAuthContext } from "../../context/AuthContext";
 import { Button } from "react-bootstrap";
+import Swal from "sweetalert2";
 
 const Login = () => {
     const { login, auth, error } = useAuthContext();
@@ -26,9 +27,17 @@ const Login = () => {
         if (response){
             navigate("/rent");
         }
+        else {
+            Swal.fire({
+                title: 'Error',
+                text: 'Usuario y/o contraseña incorrectos. Intente nuevamente peton',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+        }
     };
 
-    //aca podemos hacer q si esta loggedIn, te muestre tus datos de usuario, y te deje cerrar sesion
+    // aca podemos hacer q si esta loggedIn, te muestre tus datos de usuario, y te deje cerrar sesion
     // bueno otro dia 
 
     return (
