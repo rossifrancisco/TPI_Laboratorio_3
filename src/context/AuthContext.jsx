@@ -17,13 +17,15 @@ export const AuthProvider = ({ children }) => {
     loggedIn: false,
     userId: null,
     username: null,
+    password: null,
     email: null,
     firstName: null,
     lastName: null,
+    photo: null,
     role: null,
   };
   const [auth, setAuth] = useState(getStoredAuth);
-  const [error, setError] = useState({})
+  const [error, setError] = useState({});
 
   useEffect(() => {
     localStorage.setItem("auth", JSON.stringify(auth));
@@ -48,7 +50,7 @@ export const AuthProvider = ({ children }) => {
       setUser(data);
       localStorage.setItem("token", data);
   
-      getData(data);
+      getData(data, password); // Obtener datos del usuario y guardar contraseña ingresada
       
       return true;
     } catch (error) {
@@ -88,15 +90,17 @@ export const AuthProvider = ({ children }) => {
       loggedIn: false,
       userId: null,
       username: null,
+      password: null,
       email: null,
       firstName: null,
       lastName: null,
+      photo: null,
       role: null,
       token: null,
     });
   };
 
-  const getData = async (token) => {
+  const getData = async (token, password) => {
     try {
       const response = await fetch(`${URL}User/getSelfUser`, {
         method: "GET",
@@ -116,9 +120,11 @@ export const AuthProvider = ({ children }) => {
         loggedIn: true,
         userId: data.userId,
         username: data.username,
+        password: password, // Guardar la contraseña ingresada
         email: data.email,
         firstName: data.firstName,
         lastName: data.lastName,
+        photo: data.photo,
         role: data.role,
       });
       
@@ -129,16 +135,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const data = { login, auth, setAuth ,error, user, logout, register, updateUserProfile };
+  const data = { login, auth, setAuth, error, user, logout, register, updateUserProfile };
   return (
     <AuthContext.Provider value={data}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-
-////////////////
 
 
 // Función para iniciar sesión
@@ -187,31 +190,27 @@ const register = async (newUser, endpoint) => {
 };
 
 const updateUserProfile = async (user, endpoint) => {
-
-
   const updatedData = {
     username: user.username,
-    password : user.password|| "string", //esto tuve que hardcodearlo sino tira 401 o 403 porque por parametro no recibimos el password
-    name: user.firstName,    //tiene que vincularse con lo que está en la base de datos, con lo que te pide el controlador del .net
-    lastname: user.lastName,
+    password: user.password,
     email: user.email,
-    photo : user.photo || "string", //esto tuve que hardcodearlo sino tira 401 o 403
+    name: user.firstName,
+    lastname: user.lastName,
+    photo: user.photo
   };
 
-  const token = localStorage.getItem("token"); // O el nombre correcto de tu token en localStorage
+  const token = localStorage.getItem("token");
   console.log("Datos del usuario que se enviarán:", updatedData);
-  console.log (token)
+  console.log(token);
 
   try {
-    const BASE_URL = "https://localhost:7095"; //esto tuve que hacerlo para que me mande a la url, 
-                                              // cuando usaba URL como abajo no se por que me daba error
+    const BASE_URL = "https://localhost:7095";
     const fullUrl = `${BASE_URL}${endpoint}`;
-                                //podria ponerse fullUrl tmb en lugar de BASE_URL + endpoint
-    const response = await fetch(BASE_URL + endpoint, {  //si uso URL + endpoint me dice 404
+    const response = await fetch(BASE_URL + endpoint, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-       'Authorization': `Bearer ${token}` //sin esto da 401
+        'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify(updatedData),
     });

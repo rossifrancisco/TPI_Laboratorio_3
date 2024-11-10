@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { addUser, getUsers } from "../users/Users";
 import Navbar from '../navbarDefault/NavbarDefault';
 import Footer from '../footer/Footer'
 import './SignUp.css';
@@ -17,6 +16,7 @@ const SignUp = () => {
     const [userName, setUserName] = useState('');
     const [passWord, setPassWord] = useState('');
     const [email, setEmail] = useState('');
+    const [photo, setPhoto] = useState('');
     const [role, setRole] = useState(null);
 
     const onSubmitHandler = (event) => {
@@ -38,7 +38,7 @@ const SignUp = () => {
             name: firstName,
             lastname: lastName,
             email: email,
-            photo: photo || null,
+            photo: `https://unavatar.io/${userName}`,
             role: role,
         };
 
@@ -56,6 +56,7 @@ const SignUp = () => {
                 setUserName('');
                 setEmail('');
                 setPassWord('');
+                setPhoto('');
                 navigate("/Login"); // Redirigir a crear el inmueble
             });
         } else {

@@ -3,17 +3,21 @@ import { Button, Modal, Form, Card } from 'react-bootstrap'
 import { AuthContext, useAuthContext } from '../../context/AuthContext'
 import NavbarDefault from '../navbarDefault/NavbarDefault';
 import Swal from 'sweetalert2';
+import './userCard.css';
 
 const UserCard = () => {
     const { auth, setAuth, logout, updateUserProfile } = useAuthContext();
     const [isOpen, setIsOpen] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     
     // Estado local para los datos del formulario
     const [formData, setFormData] = useState({
         username: auth.username || '',
         email: auth.email || '',
+        password: auth.password || '',
         firstName: auth.firstName || '',
         lastName: auth.lastName || '',
+        photo: auth.photo || '',
         role: auth.role || ''
     });
 
@@ -22,7 +26,8 @@ const UserCard = () => {
         const { name, value } = e.target;
         setFormData(prevFormData => ({
             ...prevFormData,
-            [name]: value
+            [name]: value,
+            photo: name === 'username' ? `https://unavatar.io/${value}` : prevFormData.photo
         }));
     }
 
@@ -59,7 +64,13 @@ const UserCard = () => {
         }));
     
         setIsOpen(false);  // Cerrar el modal después de la actualización
-      };
+    };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(prevShowPassword => !prevShowPassword);
+        console.log(auth.photo);
+    };
+    const maskedPassword = auth.password ? 'x'.repeat(auth.password.length) : '';
 
     return (
         <>
@@ -72,9 +83,16 @@ const UserCard = () => {
                     <div className="mb-3">
                         <p><strong>ID de Usuario:</strong> {auth.userId}</p>
                         <p><strong>Nombre de Usuario:</strong> {auth.username}</p>
+                        <p>
+                            <strong>Contraseña:</strong> {showPassword ? auth.password : maskedPassword}
+                            <button onClick={togglePasswordVisibility} style={{ marginLeft: '10px' }}>
+                                {showPassword ? 'Ocultar' : 'Mostrar'}
+                            </button>
+                        </p>
                         <p><strong>Email:</strong> {auth.email}</p>
                         <p><strong>Nombre:</strong> {auth.firstName}</p>
                         <p><strong>Apellido:</strong> {auth.lastName}</p>
+                        <img className='image' src={auth.photo} alt="foto de perfil"/>
                         <p><strong>Rol:</strong> {auth.role}</p>
                     </div>
                     <Button variant="dark" onClick={() => setIsOpen(true)}>
@@ -96,6 +114,15 @@ const UserCard = () => {
                                         type="text"
                                         name="username"
                                         value={formData.username}
+                                        onChange={handleInputChange}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="mb-3" controlId="password">
+                                    <Form.Label>Contraseña</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        name="password"
+                                        value={formData.password}
                                         onChange={handleInputChange}
                                     />
                                 </Form.Group>
@@ -126,15 +153,7 @@ const UserCard = () => {
                                         onChange={handleInputChange}
                                     />
                                 </Form.Group>
-                                <Form.Group className="mb-3" controlId="role">
-                                    <Form.Label>Rol</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="role"
-                                        value={formData.role}
-                                        onChange={handleInputChange}
-                                    />
-                                </Form.Group>
+                                
                                 <Button variant="primary" type="submit">
                                     Guardar Cambios
                                 </Button>
