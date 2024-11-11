@@ -7,7 +7,6 @@ import CreateAppartment from './components/createAppartment/CreateAppartment';
 import CreateBuilding from './components/createBuilding/CreateBuilding';
 import Private from './components/routes/Private';
 import NotOwner from './components/routes/NotOwner';
-import Owner from './components/routes/Owner';
 import Contact from './components/contact/Contact';
 import { useState } from 'react';
 import AppartmentCard from './components/appartmentCard/AppartmentCard';
@@ -21,9 +20,7 @@ import UpdateAppartment from './components/updateAppartment/UpdateAppartment';
 import UpdateBuilding from './components/UpdateBuilding/UpdateBuilding';
 import AdminPanel from './components/adminPanel/adminPanel';
 
-
 function App() {
-
   const router = createBrowserRouter([
     { path: '/', element: <Home /> },
     { path: '/Login', element: <Login /> },
@@ -116,10 +113,7 @@ function App() {
         </NotOwner>
       )
     },
-    
-
   ]);
-
   return (
     <div>
       <RouterProvider router={router} />
