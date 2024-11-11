@@ -1,26 +1,23 @@
 import { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
-import PropTypes from "prop-types";
 import Swal from 'sweetalert2';
 import Footer from "../footer/Footer";
 import NavbarDefault from "../navbarDefault/NavbarDefault";
-import { useAuthContext } from "../../context/AuthContext";
 import { useBuildingContext } from "../../context/BuildingContext";
+import { useParams } from "react-router-dom";
 
 const CreateAppartment = () => {
-    //const [address, setAddress] = useState("");
+
+    const { buildingId } = useParams();
+
     const [floor, setFloor] = useState("");
-    //const [locality, setLocality] = useState("");
     const [description, setDescription] = useState("");
     const [photos, setPhotos] = useState([]);
-    //const [backyard, setBackyard] = useState("");
-    //const [garage, setGarage] = useState("");
     const [bathrooms, setBathrooms] = useState("");
     const [rooms, setRooms] = useState("");
-    //const [numberRooms, setNumberRooms] = useState("");
     const [price, setPrice] = useState("");
 
-    const { auth } = useAuthContext();
+    const { createAppartment } = useBuildingContext();
 
     const formValid = /*address && locality && numberRooms &&*/ bathrooms && rooms && price;
 
@@ -52,22 +49,16 @@ const CreateAppartment = () => {
         event.preventDefault();
 
         const appartmentData = {
-            key: Id,  // Asegúrate de tener un ID único
             buildingId: buildingId,
-            //ubication: locality,  // Asumiendo que 'locality' es lo que quieres usar para 'ubication'
-            //address: address,
             bathrooms: parseInt(bathrooms, 10),
             rooms: parseInt(rooms, 10),
-            ///garage: garage, // Convierte "si" o "no" a booleano
-            //backyard: backyard,
             pictures: Array.from(photos), // Convierte el FileList en un array
             description: description,
             price: parseFloat(price),
-            isAuthorized: true, // O la lógica correspondiente para esta propiedad
         };
         console.log(appartmentData)
 
-        onAppartmentDataSaved(appartmentData);
+        createAppartment(appartmentData);
 
         Swal.fire({
             title: 'Propiedad creada',
@@ -80,16 +71,11 @@ const CreateAppartment = () => {
             }
         });
 
-        //setAddress("");
         setFloor("");
-        //setLocality("");
         setDescription("");
         setPhotos([]);
-        //setBackyard("");
-        //setGarage("");
         setBathrooms("");
         setRooms("");
-        //setNumberRooms("");
         setPrice("");
     };
 
@@ -102,18 +88,7 @@ const CreateAppartment = () => {
                 </Card.Header>
                 <Card.Body>
                     <Form onSubmit={submitAppartmentHandler}>
-                        {/*               
-            <Form.Group controlId="address" className="mb-3">
-                <Form.Label>Dirección</Form.Label>
-                <Form.Control
-                type="text"
-                placeholder="Ingrese la dirección"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                required
-                />
-            </Form.Group>
-*/}
+                       
                         <Form.Group controlId="floor" className="mb-3">
                             <Form.Label>Número de Piso</Form.Label>
                             <Form.Control
@@ -123,18 +98,7 @@ const CreateAppartment = () => {
                                 onChange={(e) => setFloor(e.target.value)}
                             />
                         </Form.Group>
-                        {/*
-            <Form.Group controlId="locality" className="mb-3">
-                <Form.Label>Localidad</Form.Label>
-                <Form.Control
-                type="text"
-                placeholder="Ingrese la localidad"
-                value={locality}
-                onChange={(e) => setLocality(e.target.value)}
-                required
-                />
-            </Form.Group>
- */}
+
                         <Form.Group controlId="description" className="mb-3">
                             <Form.Label>Descripción</Form.Label>
                             <Form.Control
@@ -168,31 +132,6 @@ const CreateAppartment = () => {
                             ))}
                         </ul>
 
-                        {/*
-            <Form.Group controlId="backyard" className="mb-3">
-                <Form.Label>¿Tiene Patio?</Form.Label>
-                <Form.Select
-                value={backyard}
-                onChange={(e) => setBackyard(e.target.value)}
-                >
-                <option>¿La propiedad tiene patio?</option>
-                <option value="si">Sí</option>
-                <option value="no">No</option>
-                </Form.Select>
-            </Form.Group>
-
-            <Form.Group controlId="garage" className="mb-3">
-                <Form.Label>¿Tiene Garage?</Form.Label>
-                <Form.Select
-                value={garage}
-                onChange={(e) => setGarage(e.target.value)}
-                >
-                <option>¿La propiedad tiene garage?</option>
-                <option value="si">Sí</option>
-                <option value="no">No</option>
-                </Form.Select>
-            </Form.Group>
-*/}
                         <Form.Group controlId="bathrooms" className="mb-3">
                             <Form.Label>Cantidad de Baños</Form.Label>
                             <Form.Control
@@ -216,19 +155,7 @@ const CreateAppartment = () => {
                                 required
                             />
                         </Form.Group>
-                        {/*
-            <Form.Group controlId="numberRooms" className="mb-3">
-                <Form.Label>Cantidad de Ambientes</Form.Label>
-                <Form.Control
-                type="number"
-                min="0"
-                placeholder="Ingrese la cantidad de ambientes"
-                value={numberRooms}
-                onChange={(e) => setNumberRooms(e.target.value)}
-                required
-                />
-            </Form.Group>
-*/}
+                       
                         <Form.Group controlId="price" className="mb-3">
                             <Form.Label>Valor:</Form.Label>
                             <Form.Control
@@ -256,6 +183,5 @@ const CreateAppartment = () => {
         </>
     );
 };
-
 
 export default CreateAppartment;

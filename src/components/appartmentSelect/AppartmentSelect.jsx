@@ -5,45 +5,54 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
-import BuildingCard from "../buildingCard/BuildingCard";
+import AppartmentCard from "../appartmentCard/AppartmentCard";
 import useFilterProperties from "../../hooks/useFilterProperties";
 import { useAuthContext } from "../../context/AuthContext";
 import { useBuildingContext } from "../../context/BuildingContext";
 import { useEffect } from "react";
 import "./BuildingSelect.css"
+import RentCard from "../rentCard/RentCard";
 
 
-const BuildingSelect = () => {
+const AppartmentSelect = ({buildingId}) => {
 
-    const { getAllBuildings } = useBuildingContext();
-    const { auth } = useAuthContext();
-    const [ownerBuildings, setOwnerBuildings] = useState([]);
+    const { getAllAppartments } = useBuildingContext();
+    const [buildingAppartments, setBuildingsAppartments] = useState([]);
 
     useEffect(() => {
         const fetchBuildings = async () => {
             try {
-                const buildings = await getAllBuildings(); // Espera a que la promesa se resuelva
-                const filteredBuildings = buildings.filter(b => b.ownerId === auth.userId);
-                setOwnerBuildings(filteredBuildings);
+                const appartments = await getAllAppartments(); // Espera a que la promesa se resuelva
+                const filteredAppartments = appartments.filter(a => a.buildingId === buildingId);
+                setBuildingsAppartments(filteredAppartments);
             } catch (error) {
                 console.error("Error al obtener edificios:", error);
             }
         };
 
         fetchBuildings(); // Llama a la función asíncrona para obtener los edificios
-    }, [auth.userId, getAllBuildings]);
+    }, [buildingId, getAllAppartments]);
 
     return (
         <>
             <Navbar />
             <main className="all-buildings-grid">
-                {ownerBuildings.map(build => (
-                    <BuildingCard
+                {buildingAppartments.map(appartment => (
+                    <RentCard
                         key={build.id}
+                        id={build.id}
                         ubication={build.ubication}
                         address={build.address}
+                        bathrooms={build.bathrooms}
+                        rooms={build.rooms}
                         garage={build.garage}
                         backyard={build.backyard}
+                        pictures={build.pictures}
+                        description={build.description}
+                        rating={build.rating}
+                        price={build.price}
+                        isAuthorized={build.isAuthorized}
+                        userId={build.userId}
                     />
                 ))}
 
@@ -52,4 +61,4 @@ const BuildingSelect = () => {
         </>
     );
 }
-export default BuildingSelect;
+export default AppartmentSelect;

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
-import PropTypes from "prop-types";
 import Swal from 'sweetalert2';
 import Footer from "../footer/Footer";
 import NavbarDefault from "../navbarDefault/NavbarDefault";
@@ -17,9 +16,9 @@ const CreateBuilding = () => {
 
     const formValid = address && locality && backyard && garage;
 
-    const submitAppartmentHandler = (event) => {
+    const submitBuildingHandler = (event) => {
         event.preventDefault();
-        const appartmentData = {
+        const buildingData = {
             ubication: locality,   // Asumiendo que 'locality' es lo que quieres usar para 'ubication'
             address: address,
             ownerId: auth.userId, // O el ID de usuario correspondiente
@@ -27,7 +26,7 @@ const CreateBuilding = () => {
             backyard: backyard === 'si' ? true : false,
         };
     
-        createBuilding(appartmentData);
+        createBuilding(buildingData);
 
         Swal.fire({
             title: 'Propiedad creada',
@@ -54,7 +53,7 @@ const CreateBuilding = () => {
             <Card.Title>Crear Edificio</Card.Title>
         </Card.Header>
         <Card.Body>
-            <Form onSubmit={submitAppartmentHandler}>
+            <Form onSubmit={submitBuildingHandler}>
             <Form.Group controlId="address" className="mb-3">
                 <Form.Label>Dirección</Form.Label>
                 <Form.Control
@@ -115,10 +114,6 @@ const CreateBuilding = () => {
         <Footer />
     </>
   );
-};
-
-CreateBuilding.propTypes = {
-  onBuildingDataSaved: PropTypes.func.isRequired,
 };
 
 export default CreateBuilding;

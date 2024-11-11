@@ -10,18 +10,7 @@ import { useAuthContext } from "../../context/AuthContext";
 import { useBuildingContext } from "../../context/BuildingContext";
 
 const Rent = () => {
-    /*
-    const appartments = getAllAppartments();
-    const [propertys, setPropertys] = useState(appartments);
-
-    const savePropertDataHandler = (enteredPropertyData) => {
-        const propertyData = {
-            ...enteredPropertyData,
-        };
-
-        setPropertys((prevProperties) => [propertyData, ...prevProperties]);
-    };
-    */
+    
     const { bathrooms, setBathrooms, floor, setFloor, rooms, setRooms, getBackyard, setBackyard, getGarage, setGarage, appliedFilters, handleSubmit, filteredProperties, setFilteredProperties, combinedData } = useFilterProperties();
     return (
         <>

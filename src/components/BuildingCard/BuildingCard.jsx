@@ -2,7 +2,7 @@ import './BuildingCard.css'
 import { useNavigate } from 'react-router-dom';
 
 
-const BuildingCard = ({ubication, address, garage, backYard}) => {
+const BuildingCard = ({id, ubication, address, garage, backYard}) => {
 
     const navigate = useNavigate();
     const haveGarage = (garage) => {
@@ -22,7 +22,7 @@ const BuildingCard = ({ubication, address, garage, backYard}) => {
     }
 
     return (
-        <div className="building-card" onClick={() => navigate('/')}>
+        <div className="building-card" onClick={() => navigate(`/CreateAppartment/${id}`)}>
             <div className="building-card-info">
                 <p>Edificio de {ubication} en {address}</p>
                 <p>{haveGarage(garage)} {haveBackyard(backYard)}</p>

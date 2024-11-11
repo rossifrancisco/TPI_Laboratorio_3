@@ -9,7 +9,7 @@ import Private from './components/routes/Private';
 import NotOwner from './components/routes/notOwner';
 import Contact from './components/contact/Contact';
 import { useState } from 'react';
-import ApartmentCard from './components/apartment/ApartmentCard';
+import AppartmentCard from './components/appartmentCard/AppartmentCard';
 import UserCard from './components/user/UserCard';
 import { useAuthContext } from './context/AuthContext';
 import { useBuildingContext } from './context/BuildingContext';
@@ -54,7 +54,7 @@ function App() {
       ) 
     },
     {
-      path: "/CreateAppartment",
+      path: "/CreateAppartment/:buildingId",
       element: (
         <NotOwner>
           <CreateAppartment onAppartmentDataSaved={savePropertDataHandler} />
@@ -77,14 +77,14 @@ function App() {
         </notOwner>
       ),
     },
-    {
-      path: "/ApartmentCard/:id",
+    /*{
+      path: "/AppartmentCard/:id",
       element: (
         <Private>
-          <ApartmentCard properties={appartments} />
+          <AppartmentCard properties={appartments} />
         </Private>
       ),
-    },
+    },*/
     {
       path: "/user", 
       element: (

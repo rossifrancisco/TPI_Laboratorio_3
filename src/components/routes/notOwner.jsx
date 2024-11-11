@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthContext";
 import Swal from "sweetalert2";
 
-const notOwner = ({ children }) => {
+const NotOwner = ({ children }) => {
   const { auth } = useAuthContext();
 
   if (auth.role != "Owner" && auth.role != "Admin") {
@@ -18,4 +18,4 @@ const notOwner = ({ children }) => {
   return children;
 };
 
-export default notOwner;
+export default NotOwner;

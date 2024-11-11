@@ -6,7 +6,7 @@ import Footer from '../footer/Footer';
 import NavbarDefault from '../navbarDefault/NavbarDefault';
 
 
-const ApartmentCard = ({ properties }) => {
+const AppartmentCard = ({ properties }) => {
   const { id } = useParams();
 
   const apartment = properties.find(property => property.id === parseInt(id));
@@ -78,4 +78,4 @@ const ApartmentCard = ({ properties }) => {
   );
 };
 
-export default ApartmentCard;
+export default AppartmentCard;

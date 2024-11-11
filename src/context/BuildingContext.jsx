@@ -126,7 +126,7 @@ const BuildingContextProvider = ({ children }) => {
     }
   };
 
-  const createAppartment = async (appartment) => {
+  const createAppartment = async (building) => {
     try {
       const response = await fetch(URL + "Appartment/create", {
         method: "POST",
