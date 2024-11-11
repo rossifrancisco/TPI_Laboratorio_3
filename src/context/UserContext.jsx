@@ -1,44 +1,42 @@
-import React, { createContext, useState } from "react";
-import { UserService } from "../services/UserServices";
+import React, { createContext, useState, useContext } from "react";
 
 export const UserContext = createContext();
 
-const UserContextProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+export const useUserContext = () => useContext(UserContext);
 
-  const fetchWithLoading = async (fetchFunction, ...params) => {
+const UserContextProvider = ({ children }) => {
+  const URL = "https://localhost:7095/api/";
+  const token = localStorage.getItem('token');
+
+  const fetchData = async (endpoint, method = 'GET', body = null) => {
     try {
-      setLoading(true);
-      const data = await fetchFunction(...params);
-      setLoading(false);
-      return data;
+      console.log(URL + endpoint)
+      console.log(body)
+      const response = await fetch(URL + endpoint, {
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: body ? JSON.stringify(body) : null,
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+      return await response.json();
     } catch (error) {
-      setLoading(false);
-      setError(error);
+      console.error(error);
       return null;
     }
   };
 
   const data = {
-    fetchWithLoading,
-    getAllOwners: () => fetchWithLoading(UserService.getAllOwners),
-    getOwnerById: (id) => fetchWithLoading(UserService.getOwnerById, id),
-    createOwner: (owner) => fetchWithLoading(UserService.createOwner, owner),
-    updateOwner: (id, updatedOwner) => fetchWithLoading(UserService.updateOwner, id, updatedOwner),
-    deleteOwner: (id) => fetchWithLoading(UserService.deleteOwner, id),
-
-    getAllTenants: () => fetchWithLoading(UserService.getAllTenants),
-    getTenantById: (id) => fetchWithLoading(UserService.getTenantById, id),
-    createTenant: (tenant) => fetchWithLoading(UserService.createTenant, tenant),
-    updateTenant: (id, updatedTenant) => fetchWithLoading(UserService.updateTenant, id, updatedTenant),
-    deleteTenant: (id) => fetchWithLoading(UserService.deleteTenant, id),
-
-    getAllAdmins: () => fetchWithLoading(UserService.getAllAdmins),
-    getAdminById: (id) => fetchWithLoading(UserService.getAdminById, id),
-    createAdmin: (admin) => fetchWithLoading(UserService.createAdmin, admin),
-    updateAdmin: (id, updatedAdmin) => fetchWithLoading(UserService.updateAdmin, id, updatedAdmin),
-    deleteAdmin: (id) => fetchWithLoading(UserService.deleteAdmin, id),
+    getAllUsers: (role) => fetchData(`${role}`),
+    getUserById: (role, id) => fetchData(`${role}/getById/${id}`),
+    createUser: (role, user) => fetchData(`${role}/create`, "POST", user),
+    updateUser: (role, id, updatedUser) => fetchData(`${role}/update/${id}`, "PUT", updatedUser),
+    deleteUser: (role, id) => fetchData(`${role}/delete/${id}`, "DELETE"),
   };
 
   return (

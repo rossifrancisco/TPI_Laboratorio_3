@@ -124,7 +124,6 @@ export const AuthProvider = ({ children }) => {
       }
   
       const data = await response.json(); // respuesta de la API
-      console.log(data);
       return data;
     } catch (error) {
       console.log(error);
