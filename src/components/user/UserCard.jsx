@@ -4,13 +4,15 @@ import { useAuthContext } from '../../context/AuthContext'
 import NavbarDefault from '../navbarDefault/NavbarDefault';
 import Swal from 'sweetalert2';
 import './userCard.css';
+import { useNavigate } from "react-router-dom";
 
 const UserCard = () => {
+    const navigate = useNavigate();
     const { auth, setAuth, logout, updateUserProfile, getData } = useAuthContext();
     const [isOpen, setIsOpen] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
-    const userData = getData(auth.userId)
+    const userData = getData(localStorage.getItem('token'));
     
     // Estado local para los datos del formulario
     const [formData, setFormData] = useState({
@@ -82,7 +84,6 @@ const UserCard = () => {
             <Card className="w-100 max-w-md mx-auto mt-5 d-flex justify-content-center align-items-center">
                 <Card.Body>
                     <div className="mb-3">
-                        <p><strong>ID de Usuario:</strong> {auth.userId}</p>
                         <p><strong>Nombre de Usuario:</strong> {auth.username}</p>
                         <p>
                             <strong>Contraseña:</strong> {showPassword ? auth.password : maskedPassword}
@@ -102,6 +103,18 @@ const UserCard = () => {
                     <Button variant="dark" onClick={logout} style={{ marginLeft: 5}}>
                         Cerrar sesión
                     </Button>
+
+                    {/* Botones exclusivos para el rol Owner */}
+                    {auth.role === 'Owner' && (
+                        <>
+                            <Button variant="dark" onClick={() => navigate('/CreateBuilding')}>
+                                Crear Edificio
+                            </Button>
+                            <Button variant="dark" onClick={() => navigate('/BuildingSelect')}>
+                                Crear Departamento
+                            </Button>
+                        </>
+                    )}
 
                     <Modal show={isOpen} onHide={() => setIsOpen(false)}>
                         <Modal.Header closeButton>

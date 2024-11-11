@@ -3,7 +3,8 @@ import Home from './components/Home/Home';
 import Login from './components/login/Login';
 import SignUp from './components/signup/SignUp'
 import Rent from './components/rent/Rent';
-import CreateProperty from './components/property/CreateProperty';
+import CreateAppartment from './components/createAppartment/CreateAppartment';
+import CreateBuilding from './components/createBuilding/CreateBuilding';
 import Private from './components/routes/Private';
 import NotOwner from './components/routes/notOwner';
 import Contact from './components/contact/Contact';
@@ -12,22 +13,33 @@ import ApartmentCard from './components/apartment/ApartmentCard';
 import UserCard from './components/user/UserCard';
 import { useAuthContext } from './context/AuthContext';
 import { useBuildingContext } from './context/BuildingContext';
+import BuildingSelect from './components/buildingSelect/BuildingSelect';
 
 
 function App() {
 
-  const [allAppartments, setAllAppartments] = useState([]);
+  //const [allAppartments, setAllAppartments] = useState([]);
   
-  const { getAllAppartments } = useBuildingContext();
-  const appartments =  getAllAppartments();
-  const [propertys, setPropertys] = useState(appartments); 
+  const { getAllAppartments, getAllBuildings } = useBuildingContext();
 
-  const savePropertDataHandler = (enteredPropertyData) => {
-    const propertyData = {
-      ...enteredPropertyData,
+  const appartments =  getAllAppartments();
+  const [Appartments, setAppartments] = useState(appartments); 
+
+  const savePropertDataHandler = (enteredAppartmentData) => {
+    const appartmentData = {
+      ...enteredAppartmentData,
     };
 
-    setPropertys((prevProperties) => [propertyData, ...prevProperties]); 
+    setAppartments((prevAppartments) => [appartmentData, ...prevAppartments]); 
+  };
+
+  const buildings = getAllBuildings();
+  const [allBuildings, setAllBuildings] = useState(buildings);
+  const saveBuildingDataHandler = (enteredBuildingData) => {
+    const buildingData = {
+      ...enteredBuildingData,
+    };
+    setAllBuildings((prevBuildings) => [buildingData, ...prevBuildings]);
   };
 
   const router = createBrowserRouter([
@@ -37,23 +49,39 @@ function App() {
     { path: '/Contact', element: <Contact />},
     { path: '/Rent', element: (
       <Private>
-        <Rent propertys={propertys} />
+        <Rent appartments={appartments} />
       </Private>
       ) 
     },
     {
-      path: "/CreateProperty",
+      path: "/CreateAppartment",
       element: (
         <NotOwner>
-          <CreateProperty onPropertyDataSaved={savePropertDataHandler} />
+          <CreateAppartment onAppartmentDataSaved={savePropertDataHandler} />
         </NotOwner>
+      ),
+    },
+    {
+      path: "/CreateBuilding",
+      element: (
+        <NotOwner>
+          <CreateBuilding onBuildingDataSaved={saveBuildingDataHandler} />
+        </NotOwner>
+      ),
+    },
+    {
+      path: "/BuildingSelect",
+      element: (
+        <notOwner>
+          <BuildingSelect />
+        </notOwner>
       ),
     },
     {
       path: "/ApartmentCard/:id",
       element: (
         <Private>
-          <ApartmentCard properties={propertys} />
+          <ApartmentCard properties={appartments} />
         </Private>
       ),
     },

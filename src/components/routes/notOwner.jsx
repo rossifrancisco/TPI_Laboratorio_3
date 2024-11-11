@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 const notOwner = ({ children }) => {
   const { auth } = useAuthContext();
 
-  if (auth.role != "Owner" || auth.role != "Admin") {
+  if (auth.role != "Owner" && auth.role != "Admin") {
     Swal.fire({
         title: 'Error',
         text: 'No tenes permiso para esta funcionalidad',

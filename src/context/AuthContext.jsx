@@ -17,13 +17,13 @@ export const AuthProvider = ({ children }) => {
     loggedIn: false,
     userId: null,
     username: null,
-    password: null,
     email: null,
     firstName: null,
     lastName: null,
     photo: null,
     role: null,
   };
+  
   const [auth, setAuth] = useState(getStoredAuth);
   const [error, setError] = useState({});
 
@@ -42,18 +42,30 @@ export const AuthProvider = ({ children }) => {
       });
   
       if (!response.ok) {
-        const data = await response.text();
+        const data = await response.json();
+        throw new Error(data.message || "Credenciales incorrectas");
       }
   
       const data = await response.text(); // respuesta de la API
       setUser(data);
       localStorage.setItem("token", data);
   
-      getData(data, password); // Obtener datos del usuario y guardar contraseña ingresada
+      let userData = await getData(data);
+      setAuth({
+        loggedIn: true,
+        userId: userData.userId,
+        username: userData.username,
+        email: userData.email,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        photo: userData.photo,
+        role: userData.role,
+      })
       
       return true;
     } catch (error) {
       console.log(error);
+      throw new Error(error.message || "Error al conectar con el servidor");
     }
   };
 
@@ -82,27 +94,23 @@ export const AuthProvider = ({ children }) => {
 
 
   const logout = () => {
-    logoutUser();
     localStorage.removeItem("token");
     setAuth({
       loggedIn: false,
       userId: null,
       username: null,
-      password: null,
       email: null,
       firstName: null,
       lastName: null,
       photo: null,
       role: null,
-      token: null,
     });
   };
 
 
-  const getData = async (userId) => {
-    const token = localStorage.getItem("token");
+  const getData = async (token) => {
     try {
-      const response = await fetch(`${URL}User/getSelfUser/${userId}`, {
+      const response = await fetch(`${URL}User/getSelfUser`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

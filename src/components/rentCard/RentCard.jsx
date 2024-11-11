@@ -1,11 +1,11 @@
 import './RentCard.css'
 import { useNavigate } from 'react-router-dom';
 
-const RentCard = ({ubication, type, id, address, bathrooms, rooms, garage, backyard, pictures, description, rating, price, isAuthorized, userId}) => {
+const RentCard = ({ubication, id, address, bathrooms, rooms, garage, backYard, pictures, description, rating, price, isAuthorized}) => {
     const navigate = useNavigate();
 
     const handleCardClick = () => {
-        navigate(`/ApartmentCard/${id}`);
+        navigate(`/AppartmentCard/${id}`);
     };
     
     const haveGarage = (garage) => {
@@ -16,8 +16,8 @@ const RentCard = ({ubication, type, id, address, bathrooms, rooms, garage, backy
         }
     }
 
-    const haveBackyard = (backyard) => {
-        if (backyard) {
+    const haveBackyard = (backYard) => {
+        if (backYard) {
             return "y con Patio"
         } else {
             return "y sin Patio"
@@ -25,22 +25,15 @@ const RentCard = ({ubication, type, id, address, bathrooms, rooms, garage, backy
     }
 
     return (
-        <div className="rent-card" onClick={handleCardClick}>
+        <div className="rent-card" onClick={() => navigate('/')}>
             <img className="rent-card-image" src={pictures[0]} alt="Imagen del inmueble" />
             <div className="rent-card-info">
-                <p>{type} de {ubication} en {address}</p>
+                <p>Departamento de {ubication} en {address}</p>
                 <p>{bathrooms} Baños y {rooms} Habitaciones</p>
-                <p>{haveGarage(garage)} {haveBackyard(backyard)}</p>
+                <p>{haveGarage(garage)} {haveBackyard(backYard)}</p>
                 <p>${price}/mes</p>
                 <p>{description}</p>
                 <p>{rating}</p>
-
-                {/* esto se le deberia mostrar solo al admin y no se deberian mostrar las no disponibles al comprador???
-                
-                <p>{isAuthorized ? 'Autorizado' : 'No autorizado'}</p>
-                <p>ID Usuario: {userId}</p>
-                */}
-                
             </div>
         </div>
     )

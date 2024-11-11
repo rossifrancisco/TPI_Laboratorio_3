@@ -19,6 +19,7 @@ const BuildingContextProvider = ({ children }) => {
       if (!response.ok) throw new Error(`Error: ${response.status} - ${response.statusText}`);
 
       const data = await response.json();
+      console.log(data);
       return data;
     } catch (error) {
       console.error(error);
@@ -46,7 +47,7 @@ const BuildingContextProvider = ({ children }) => {
 
   const createBuilding = async (building) => {
     try {
-      const response = await fetch(URL + "Building/CreateBuilding", {
+      const response = await fetch(URL + "Building/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -105,7 +106,7 @@ const BuildingContextProvider = ({ children }) => {
 
   const getAllAppartments = async () => {
     try {
-      const response = await fetch(`${URL}Appartment/`, {
+      const response = await fetch(`${URL}appartment/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -118,11 +119,30 @@ const BuildingContextProvider = ({ children }) => {
       }
 
       const data = await response.json(); // respuesta de la API
-      console.log(data);
       return data;
     } catch (error) {
       console.log(error);
       throw new Error(error.message || "Error al conectar con el servidor");
+    }
+  };
+
+  const createAppartment = async (appartment) => {
+    try {
+      const response = await fetch(URL + "Appartment/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify(building),
+      });
+      if (!response.ok) throw new Error(`Error: ${response.status} - ${response.statusText}`);
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error(error);
+      return null;
     }
   };
 
@@ -133,6 +153,7 @@ const BuildingContextProvider = ({ children }) => {
     updateBuilding,
     deleteBuilding,
     getAllAppartments,
+    createAppartment,
   };
 
   return (

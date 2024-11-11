@@ -22,22 +22,7 @@ const Rent = () => {
         setPropertys((prevProperties) => [propertyData, ...prevProperties]);
     };
     */
-    const { bathrooms, setBathrooms, floors, getFloors, rooms, setRooms, getBackyard, setBackyard, getGarage, setGarage, appliedFilters, handleSubmit, filteredProperties, setFilteredProperties } = useFilterProperties();
-    const { auth, setAuth } = useAuthContext();
-    const [allAppartments, setAllAppartments] = useState([]);
-    const { getAllAppartments } = useBuildingContext();
-    const appartments = getAllAppartments();
-    const [propertys, setPropertys] = useState(appartments);
-
-    useEffect(() => {
-        const fetchAppartments = async () => {
-            const appartments = await getAllAppartments();
-            setAllAppartments(appartments);
-            setFilteredProperties(allAppartments); // inicializa filteredProperties con todos los apartamentos
-        };
-        fetchAppartments();
-    }, []);
-
+    const { bathrooms, setBathrooms, floor, setFloor, rooms, setRooms, getBackyard, setBackyard, getGarage, setGarage, appliedFilters, handleSubmit, filteredProperties, setFilteredProperties, combinedData } = useFilterProperties();
     return (
         <>
             <Navbar />
@@ -74,22 +59,27 @@ const Rent = () => {
                     </Form.Group>
 
                     <Form.Group controlId="type" className="w-30" style={{ marginLeft: "5px" }}>
-                        <Form.Label>Tipo</Form.Label>
+                        <Form.Label>Piso</Form.Label>
                         <Form.Select
-                            value={type}
-                            onChange={(e) => setType(e.target.value)}
+                            value={floor}
+                            onChange={(e) => setFloor(e.target.value)}
                             className="w-100"
                         >
                             <option value="">Todos</option>
-                            <option value="casa">Casa</option>
-                            <option value="depto">Departamento</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
                         </Form.Select>
                     </Form.Group>
 
                     <Form.Group controlId="backyard" className="w-30">
                         <Form.Label>Patio</Form.Label>
                         <Form.Select
-                            value={backyard}
+                            value={getBackyard}
                             onChange={(e) => setBackyard(e.target.value)}
                             className="w-100"
                         >
@@ -102,7 +92,7 @@ const Rent = () => {
                     <Form.Group controlId="garage" className="w-30">
                         <Form.Label>Garaje</Form.Label>
                         <Form.Select
-                            value={garage}
+                            value={getGarage}
                             onChange={(e) => setGarage(e.target.value)}
                             className="w-100"
                         >
@@ -128,7 +118,6 @@ const Rent = () => {
                         key={build.id}
                         id={build.id}
                         ubication={build.ubication}
-                        type={build.type}
                         address={build.address}
                         bathrooms={build.bathrooms}
                         rooms={build.rooms}
