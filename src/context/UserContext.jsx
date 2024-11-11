@@ -10,8 +10,6 @@ const UserContextProvider = ({ children }) => {
 
   const fetchData = async (endpoint, method = 'GET', body = null) => {
     try {
-      console.log(URL + endpoint)
-      console.log(body)
       const response = await fetch(URL + endpoint, {
         method: method,
         headers: {

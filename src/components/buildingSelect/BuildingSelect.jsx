@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
-import BuildingCard from "../buildingCard/BuildingCard";
+import BuildingCard from "../BuildingCard/BuildingCard";
 import useFilterProperties from "../../hooks/useFilterProperties";
 import { useAuthContext } from "../../context/AuthContext";
 import { useBuildingContext } from "../../context/BuildingContext";
@@ -40,10 +40,12 @@ const BuildingSelect = () => {
                 {ownerBuildings.map(build => (
                     <BuildingCard
                         key={build.id}
+                        buildingId={build.id}
                         ubication={build.ubication}
                         address={build.address}
                         garage={build.garage}
                         backyard={build.backyard}
+                        navigateTo={'/CreateAppartment'}
                     />
                 ))}
 

@@ -10,7 +10,6 @@ import useFilterProperties from "../../hooks/useFilterProperties";
 import { useAuthContext } from "../../context/AuthContext";
 import { useBuildingContext } from "../../context/BuildingContext";
 import { useEffect } from "react";
-import "./BuildingSelect.css"
 import RentCard from "../rentCard/RentCard";
 
 
@@ -37,14 +36,14 @@ const AppartmentSelect = ({buildingId}) => {
         <>
             <Navbar />
             <main className="all-buildings-grid">
-                {buildingAppartments.map(appartment => (
+                {buildingAppartments.filter(appartment => appartment.isAuthorized).map(appartment => (
                     <RentCard
                         key={build.id}
                         id={build.id}
                         ubication={build.ubication}
                         address={build.address}
-                        bathrooms={build.bathrooms}
-                        rooms={build.rooms}
+                        bathrooms={build.bathrooms}   
+                        rooms={build.rooms}   //
                         garage={build.garage}
                         backyard={build.backyard}
                         pictures={build.pictures}

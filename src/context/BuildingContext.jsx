@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+import UpdateAppartment from "../components/updateAppartment/UpdateAppartment";
 
 export const BuildingContext = createContext();
 
@@ -29,7 +30,7 @@ const BuildingContextProvider = ({ children }) => {
 
   const getBuildingById = async (id) => {
     try {
-      const response = await fetch(URL + `Building/GetBuildingById/${id}`, {
+      const response = await fetch(URL + `Building/getById/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -67,7 +68,7 @@ const BuildingContextProvider = ({ children }) => {
 
   const updateBuilding = async (id, updatedBuilding) => {
     try {
-      const response = await fetch(URL + `Building/${id}`, {
+      const response = await fetch(URL + `Building/update/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -84,10 +85,15 @@ const BuildingContextProvider = ({ children }) => {
       return null;
     }
   };
+  
+  const convertAuthorizedBuilding = () => {
+    
+
+  }
 
   const deleteBuilding = async (id) => {
     try {
-      const response = await fetch(URL + `Building/${id}`, {
+      const response = await fetch(URL + `Building/delete/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -126,6 +132,25 @@ const BuildingContextProvider = ({ children }) => {
     }
   };
 
+  const getAppartmentById = async (id) => {
+    try {
+      const response = await fetch(URL + `Appartment/getById/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
+      if (!response.ok) throw new Error(`Error: ${response.status} - ${response.statusText}`);
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
   const createAppartment = async (building) => {
     try {
       const response = await fetch(URL + "Appartment/create", {
@@ -146,6 +171,66 @@ const BuildingContextProvider = ({ children }) => {
     }
   };
 
+  const deleteAppartment = async (id) => {
+    try {
+      const response = await fetch(URL + `Appartment/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
+      if (response.status === 204) return true;
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
+  const reservation = async (id, request) => {
+    try {
+      const response = await fetch(URL + `Reservation/departamento/${id}`,{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify(request),
+      })
+      if (!response.ok) throw new Error(`Error: ${response.status} - ${response.statusText}`);
+
+      const data = await response.json();
+      return data;
+    }
+    catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
+  const rentAppartment = async (tenantId, appartmentId) => {
+    try {
+      const response = await fetch(URL + `Tenant/assignAppartment/${tenantId}/${appartmentId}`,{
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+        },
+      })
+      if (!response.ok) throw new Error(`Error: ${response.status} - ${response.statusText}`);
+
+      const data = await response.text();
+      return data;
+    }
+    catch (error) {
+      console.error(error);
+      return null;
+    }
+  } 
+
   const data = {
     getAllBuildings,
     getBuildingById,
@@ -154,6 +239,11 @@ const BuildingContextProvider = ({ children }) => {
     deleteBuilding,
     getAllAppartments,
     createAppartment,
+    getAppartmentById,
+    deleteAppartment,
+    reservation,
+    rentAppartment,
+    UpdateAppartment,
   };
 
   return (

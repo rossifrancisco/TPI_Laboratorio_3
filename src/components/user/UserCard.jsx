@@ -162,11 +162,22 @@ const UserCard = () => {
                     {/* Botones exclusivos para el rol Owner */}
                     {auth.role === 'Owner' && (
                         <>
-                            <Button variant="dark" onClick={() => navigate('/CreateBuilding')}>
+                            <Button variant="dark" onClick={() => navigate('/CreateBuilding')} style={{ marginLeft: 5 }}>
                                 Crear Edificio
                             </Button>
-                            <Button variant="dark" onClick={() => navigate('/BuildingSelect')}>
+                            <Button variant="dark" onClick={() => navigate('/BuildingSelect')} style={{ marginLeft: 5 }}>
                                 Crear Departamento
+                            </Button>
+                            <Button variant="dark" onClick={() => navigate('/OwnProperties')} style={{ marginLeft: 5 }}>
+                                Modificar
+                            </Button>
+                        </>
+                    )}
+
+                    {auth.role === 'Admin' && (
+                        <>
+                            <Button variant="dark" onClick={() => navigate('/adminPanel')} style={{ marginLeft: 5 }}>
+                                Panel del administrador
                             </Button>
                         </>
                     )}

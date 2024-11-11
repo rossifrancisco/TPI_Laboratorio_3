@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import Swal from 'sweetalert2';
 import Footer from "../footer/Footer";
@@ -6,36 +6,52 @@ import NavbarDefault from "../navbarDefault/NavbarDefault";
 import { useBuildingContext } from "../../context/BuildingContext";
 import { useParams } from "react-router-dom";
 
-const CreateAppartment = () => {
+const UpdateAppartment = () => {
+    const { appartmentId } = useParams();
+    const { UpdateAppartment, getAppartmentById, deleteAppartment } = useBuildingContext();
+    const [appartment, setAppartment] = useState(null);
 
-    const { buildingId } = useParams();
-
-    const [floor, setFloor] = useState("");
-    const [number, setNumber] = useState("");
+    const [floor, setFloor] = useState(0);
+    const [number, setNumber] = useState(0)
     const [description, setDescription] = useState("");
     const [photos, setPhotos] = useState([]);
-    const [bathrooms, setBathrooms] = useState("");
-    const [rooms, setRooms] = useState("");
-    const [price, setPrice] = useState("");
+    const [bathrooms, setBathrooms] = useState(0);
+    const [rooms, setRooms] = useState(0);
+    const [price, setPrice] = useState(0);
+    const [buildingId, setBuildingId] = useState("");
 
-    const { createAppartment } = useBuildingContext();
+    useEffect(() => {
+        const fetchAppartment = async () => {
+            const appartmentFetched = await getAppartmentById(appartmentId);
+            setAppartment(appartmentFetched);
+            console.log(appartmentFetched);
+            if (appartmentFetched) {
+                setFloor(appartmentFetched.floor || "");
+                setDescription(appartmentFetched.description || "");
+                setPhotos(appartmentFetched.pictures || []); // Use `pictures` directly
+                setBathrooms(appartmentFetched.bathrooms || "");
+                setRooms(appartmentFetched.rooms || "");
+                setPrice(appartmentFetched.price || "");
+                setBuildingId(appartmentFetched.buildingId || "");
+                setNumber(appartmentFetched.number || "");
+            }
+        };
+        fetchAppartment();
+    }, [appartmentId, getAppartmentById]);
 
-    const formValid = floor && number && description && photos && bathrooms && rooms && price
+    const formValid = floor && description && photos.length > 0 && bathrooms && rooms && price && number;
 
-
-    const [photoUrl, setPhotoUrl] = useState(""); // Para guardar la URL ingresada por el usuario
+    const [photoUrl, setPhotoUrl] = useState("");
 
     const addPhotoUrl = (url) => {
-        // Asegurarse de que la URL sea válida (opcional, dependiendo de tus necesidades)
         if (isValidUrl(url)) {
             setPhotos([...photos, url]);
-            setPhotoUrl(""); // Limpiar el campo de URL después de agregarla
+            setPhotoUrl("");
         } else {
             alert("URL no válida");
         }
     };
 
-    // Función para validar si la URL es válida
     const isValidUrl = (url) => {
         try {
             new URL(url);
@@ -45,6 +61,10 @@ const CreateAppartment = () => {
         }
     };
 
+    const deletePhoto = (url) => {
+        const updatedPhotos = photos.filter(photo => photo !== url);
+        setPhotos(updatedPhotos);
+    };
 
     const submitAppartmentHandler = (event) => {
         event.preventDefault();
@@ -52,44 +72,49 @@ const CreateAppartment = () => {
         const appartmentData = {
             floor: floor,
             number: number,
-            buildingId: buildingId,
+            buildingId: buildingId, 
             bathrooms: bathrooms,
             rooms: rooms,
-            pictures: Array.from(photos),
+            pictures: photos,
             description: description,
             price: price,
         };
-        console.log(appartmentData)
 
-        createAppartment(appartmentData);
-
-        Swal.fire({
-            title: 'Propiedad creada',
-            text: 'La propiedad ha sido creada exitosamente.',
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
-        })
-
-        setFloor("");
-        setDescription("");
-        setPhotos([]);
-        setBathrooms("");
-        setRooms("");
-        setPrice("");
-        setNumber("");
-        setPhotoUrl("");
+        const response = UpdateAppartment(appartmentId, appartmentData);
+        if (response) {
+            Swal.fire({
+                title: 'Propiedad actualizada',
+                text: 'La propiedad ha sido actualizada exitosamente.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+        } else {
+            Swal.fire({
+                title: 'Error',
+                text: 'La propiedad no ha sido actualizada exitosamente.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+        }
     };
+
+    const DeleteHandler =() => {
+        deleteAppartment(appartmentId);
+    }
+
+    if (!appartment) {
+        return <h1>Cargando...</h1>;
+    }
 
     return (
         <>
             <NavbarDefault />
             <Card className="w-80 mx-auto" style={{ maxWidth: "800px", marginTop: "20px", marginBottom: "20px" }}>
                 <Card.Header>
-                    <Card.Title>Crear Propiedad</Card.Title>
+                    <Card.Title>Actualizar Propiedad</Card.Title>
                 </Card.Header>
                 <Card.Body>
                     <Form onSubmit={submitAppartmentHandler}>
-                       
                         <Form.Group controlId="floor" className="mb-3">
                             <Form.Label>Número de Piso</Form.Label>
                             <Form.Control
@@ -101,7 +126,7 @@ const CreateAppartment = () => {
                         </Form.Group>
 
                         <Form.Group controlId="floor" className="mb-3">
-                            <Form.Label>Número de departamento</Form.Label>
+                            <Form.Label>Número de depto</Form.Label>
                             <Form.Control
                                 type="number"
                                 placeholder="Ingrese el número de departamento"
@@ -125,12 +150,10 @@ const CreateAppartment = () => {
                             <Form.Control
                                 type="text"
                                 placeholder="Ingrese URL de la imagen"
-                                onChange={(e) => setPhotoUrl(e.target.value)} // Guarda la URL ingresada
+                                value={photoUrl}
+                                onChange={(e) => setPhotoUrl(e.target.value)}
                             />
-                            <Button
-                                variant="primary"
-                                onClick={() => addPhotoUrl(photoUrl)} // Agrega la URL al arreglo
-                            >
+                            <Button variant="primary" onClick={() => addPhotoUrl(photoUrl)}>
                                 Agregar Foto
                             </Button>
                         </Form.Group>
@@ -139,6 +162,9 @@ const CreateAppartment = () => {
                             {photos.map((photo, index) => (
                                 <li key={index}>
                                     <img src={photo} alt={`Foto ${index + 1}`} style={{ maxWidth: '200px', maxHeight: '200px' }} />
+                                    <Button variant="danger" onClick={() => deletePhoto(photo)}>
+                                        Eliminar
+                                    </Button>
                                 </li>
                             ))}
                         </ul>
@@ -166,7 +192,7 @@ const CreateAppartment = () => {
                                 required
                             />
                         </Form.Group>
-                       
+
                         <Form.Group controlId="price" className="mb-3">
                             <Form.Label>Valor:</Form.Label>
                             <Form.Control
@@ -179,13 +205,23 @@ const CreateAppartment = () => {
                             />
                         </Form.Group>
 
-                        <Button
+                        <Button 
+                            style={{ marginBottom: 5 }}
                             type="submit"
                             variant="primary"
                             className="w-100"
                             disabled={!formValid}
                         >
-                            Crear Propiedad
+                            Actualizar Propiedad
+                        </Button>
+                        <Button
+                            type="button"
+                            variant="danger"
+                            className="w-100"
+                            disabled={!formValid}
+                            onClick={() => DeleteHandler()}
+                        >
+                            Eliminar
                         </Button>
                     </Form>
                 </Card.Body>
@@ -195,4 +231,4 @@ const CreateAppartment = () => {
     );
 };
 
-export default CreateAppartment;
+export default UpdateAppartment;

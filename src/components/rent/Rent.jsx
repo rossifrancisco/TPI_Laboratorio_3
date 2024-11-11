@@ -118,6 +118,7 @@ const Rent = () => {
                         price={build.price}
                         isAuthorized={build.isAuthorized}
                         userId={build.userId}
+                        navigateTo='/AppartmentCard'
                     />
                 ))}
             </main>

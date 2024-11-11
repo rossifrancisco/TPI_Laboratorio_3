@@ -36,10 +36,6 @@ const Login = () => {
             });
         }
     };
-
-    // aca podemos hacer q si esta loggedIn, te muestre tus datos de usuario, y te deje cerrar sesion
-    // bueno otro dia 
-
     return (
         <>
             <Navbar />

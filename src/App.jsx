@@ -6,7 +6,8 @@ import Rent from './components/rent/Rent';
 import CreateAppartment from './components/createAppartment/CreateAppartment';
 import CreateBuilding from './components/createBuilding/CreateBuilding';
 import Private from './components/routes/Private';
-import NotOwner from './components/routes/notOwner';
+import NotOwner from './components/routes/NotOwner';
+import Owner from './components/routes/Owner';
 import Contact from './components/contact/Contact';
 import { useState } from 'react';
 import AppartmentCard from './components/appartmentCard/AppartmentCard';
@@ -14,50 +15,40 @@ import UserCard from './components/user/UserCard';
 import { useAuthContext } from './context/AuthContext';
 import { useBuildingContext } from './context/BuildingContext';
 import BuildingSelect from './components/buildingSelect/BuildingSelect';
+import OwnProperties from './components/ownProperties/ownProperties';
+import AppartmentSelect from './components/appartmentSelect/AppartmentSelect';
+import UpdateAppartment from './components/updateAppartment/UpdateAppartment';
+import UpdateBuilding from './components/UpdateBuilding/UpdateBuilding';
+import AdminPanel from './components/adminPanel/adminPanel';
 
 
 function App() {
-
-  //const [allAppartments, setAllAppartments] = useState([]);
-  
-  const { getAllAppartments, getAllBuildings } = useBuildingContext();
-
-  const appartments =  getAllAppartments();
-  const [Appartments, setAppartments] = useState(appartments); 
-
-  const savePropertDataHandler = (enteredAppartmentData) => {
-    const appartmentData = {
-      ...enteredAppartmentData,
-    };
-
-    setAppartments((prevAppartments) => [appartmentData, ...prevAppartments]); 
-  };
-
-  const buildings = getAllBuildings();
-  const [allBuildings, setAllBuildings] = useState(buildings);
-  const saveBuildingDataHandler = (enteredBuildingData) => {
-    const buildingData = {
-      ...enteredBuildingData,
-    };
-    setAllBuildings((prevBuildings) => [buildingData, ...prevBuildings]);
-  };
 
   const router = createBrowserRouter([
     { path: '/', element: <Home /> },
     { path: '/Login', element: <Login /> },
     { path: '/SignUp', element: <SignUp /> },
-    { path: '/Contact', element: <Contact />},
-    { path: '/Rent', element: (
-      <Private>
-        <Rent appartments={appartments} />
-      </Private>
-      ) 
+    { path: '/Contact', element: <Contact /> },
+    {
+      path: '/Rent', element: (
+        <Private>
+          <Rent  />
+        </Private>
+      )
     },
     {
       path: "/CreateAppartment/:buildingId",
       element: (
         <NotOwner>
-          <CreateAppartment onAppartmentDataSaved={savePropertDataHandler} />
+          <CreateAppartment  />
+        </NotOwner>
+      ),
+    },
+    {
+      path: "/UpdateAppartment/:appartmentId",
+      element: (
+        <NotOwner>
+          <UpdateAppartment />
         </NotOwner>
       ),
     },
@@ -65,34 +56,67 @@ function App() {
       path: "/CreateBuilding",
       element: (
         <NotOwner>
-          <CreateBuilding onBuildingDataSaved={saveBuildingDataHandler} />
+          <CreateBuilding />
+        </NotOwner>
+      ),
+    },
+    {
+      path: "/UpdateBuilding/:buildingId",
+      element: (
+        <NotOwner>
+          <UpdateBuilding />
         </NotOwner>
       ),
     },
     {
       path: "/BuildingSelect",
       element: (
-        <notOwner>
+        <NotOwner>
           <BuildingSelect />
-        </notOwner>
+        </NotOwner>
       ),
     },
-    /*{
+    {
+      path: "/AppartmentSelect",
+      element: (
+        <NotOwner>
+          <AppartmentSelect />
+        </NotOwner>
+      ),
+    },
+    {
       path: "/AppartmentCard/:id",
       element: (
         <Private>
-          <AppartmentCard properties={appartments} />
-        </Private>
-      ),
-    },*/
-    {
-      path: "/user", 
-      element: (
-        <Private> 
-            <UserCard />
+          <AppartmentCard  />
         </Private>
       ),
     },
+    {
+      path: "/user",
+      element: (
+        <Private>
+          <UserCard />
+        </Private>
+      ),
+    },
+    {
+      path: '/OwnProperties',
+      element: (
+        <NotOwner>
+          <OwnProperties />
+        </NotOwner>
+      )
+    },
+    {
+      path: '/AdminPanel',
+      element: (
+        <NotOwner>
+          <AdminPanel />
+        </NotOwner>
+      )
+    },
+    
 
   ]);
 
