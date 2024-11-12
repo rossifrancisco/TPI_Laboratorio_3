@@ -25,16 +25,19 @@ const NavbarDefault = () => {
                             </>
                         ) : (
                             <>
-                                <a className="nav-link" href="/">INICIO</a>
-                                <a className="nav-link" href="/Contact">CONTACTO</a>
+                                <a className="nav-link" href="/" style={{alignContent: "center"}} >INICIO</a>
+                                <a className="nav-link" href="/Contact" style={{alignContent: "center"}} >CONTACTO</a>
                                
-                                {auth.role === 'owner' && (
-                                    <a className="nav-link" href="/CreateProperty">SUBIR INMUEBLE</a>
+                                {auth.role === 'Owner' && (
+                                    <>
+                                        <a className="nav-link" href="/CreateBuilding" style={{alignContent: "center"}} >CREAR EDIFICIO</a>
+                                        <a className="nav-link" href="/BuildingSelect" style={{alignContent: "center"}} >CREAR DEPARTAMENTO</a>
+                                    </>
                                 )}
-                                {auth.role === 'tenant' && (
-                                    <a className="nav-link" href="/rent">ALQUILER</a>
+                                {auth.role === 'Tenant' && (
+                                    <a className="nav-link" href="/Rent" style={{alignContent: "center"}} >ALQUILER</a>
                                 )}
-                                <a className="nav-link" href="/Login">LOGIN</a>
+                                <a className="nav-link" href="/User"><img className='image' src={auth.photo} alt="foto de perfil" style={{ width: "50px", borderRadius: "50%" }}/></a>
                             </>
                         )}
                     </div>

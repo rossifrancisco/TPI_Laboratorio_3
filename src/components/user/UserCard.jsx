@@ -3,10 +3,10 @@ import { Button, Modal, Form, Card } from 'react-bootstrap'
 import { useAuthContext } from '../../context/AuthContext'
 import NavbarDefault from '../navbarDefault/NavbarDefault';
 import Swal from 'sweetalert2';
-import './userCard.css';
 import { useNavigate } from "react-router-dom";
 import AvatarGenerator from '../avatarGenerator/AvatarGenerator';
 import { useUserContext } from '../../context/UserContext';
+import Footer from '../footer/Footer';
 
 const UserCard = () => {
     const navigate = useNavigate();
@@ -149,7 +149,7 @@ const UserCard = () => {
                         <p><strong>Email:</strong> {auth.email}</p>
                         <p><strong>Nombre:</strong> {auth.firstName}</p>
                         <p><strong>Apellido:</strong> {auth.lastName}</p>
-                        <img className='image' src={auth.photo} alt="foto de perfil" />
+                        <img className='image' src={auth.photo} alt="foto de perfil" style={{ width: "100px", borderRadius: "50%" }}/>
                         <p><strong>Rol:</strong> {auth.role}</p>
                     </div>
                     <Button variant="dark" onClick={() => setIsOpen(true)}>
@@ -273,6 +273,7 @@ const UserCard = () => {
                     </Modal>
                 </Card.Body>
             </Card>
+            <Footer />
         </>
     )
 }

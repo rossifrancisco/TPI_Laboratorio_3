@@ -48,69 +48,71 @@ const CreateBuilding = () => {
   return (
     <>
         <NavbarDefault />
-        <Card className="w-80 mx-auto" style={{ maxWidth: "800px", marginTop: "20px", marginBottom:"20px" }}>
-        <Card.Header>
-            <Card.Title>Crear Edificio</Card.Title>
-        </Card.Header>
-        <Card.Body>
-            <Form onSubmit={submitBuildingHandler}>
-            <Form.Group controlId="address" className="mb-3">
-                <Form.Label>Dirección</Form.Label>
-                <Form.Control
-                type="text"
-                placeholder="Ingrese la dirección"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                required
-                />
-            </Form.Group>
+        <div style={{minHeight: "100vh"}}>
+            <Card className="w-80 mx-auto" style={{ maxWidth: "800px", marginTop: "20px", marginBottom:"20px"}}>
+            <Card.Header>
+                <Card.Title>Crear Edificio</Card.Title>
+            </Card.Header>
+            <Card.Body>
+                <Form onSubmit={submitBuildingHandler}>
+                <Form.Group controlId="address" className="mb-3">
+                    <Form.Label>Dirección</Form.Label>
+                    <Form.Control
+                    type="text"
+                    placeholder="Ingrese la dirección"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    required
+                    />
+                </Form.Group>
 
-            <Form.Group controlId="locality" className="mb-3">
-                <Form.Label>Localidad</Form.Label>
-                <Form.Control
-                type="text"
-                placeholder="Ingrese la localidad"
-                value={locality}
-                onChange={(e) => setLocality(e.target.value)}
-                required
-                />
-            </Form.Group>
+                <Form.Group controlId="locality" className="mb-3">
+                    <Form.Label>Localidad</Form.Label>
+                    <Form.Control
+                    type="text"
+                    placeholder="Ingrese la localidad"
+                    value={locality}
+                    onChange={(e) => setLocality(e.target.value)}
+                    required
+                    />
+                </Form.Group>
 
-            <Form.Group controlId="backyard" className="mb-3">
-                <Form.Label>¿Tiene Patio?</Form.Label>
-                <Form.Select
-                value={backyard}
-                onChange={(e) => setBackyard(e.target.value)}
+                <Form.Group controlId="backyard" className="mb-3">
+                    <Form.Label>¿Tiene Patio?</Form.Label>
+                    <Form.Select
+                    value={backyard}
+                    onChange={(e) => setBackyard(e.target.value)}
+                    >
+                    <option>¿La propiedad tiene patio?</option>
+                    <option value="si">Sí</option>
+                    <option value="no">No</option>
+                    </Form.Select>
+                </Form.Group>
+
+                <Form.Group controlId="garage" className="mb-3">
+                    <Form.Label>¿Tiene Garage?</Form.Label>
+                    <Form.Select
+                    value={garage}
+                    onChange={(e) => setGarage(e.target.value)}
+                    >
+                    <option>¿El edificio tiene Garage?</option>
+                    <option value="si">Sí</option>
+                    <option value="no">No</option>
+                    </Form.Select>
+                </Form.Group>
+
+                <Button
+                    type="submit"
+                    variant="primary"
+                    className="w-100"
+                    disabled={!formValid}
                 >
-                <option>¿La propiedad tiene patio?</option>
-                <option value="si">Sí</option>
-                <option value="no">No</option>
-                </Form.Select>
-            </Form.Group>
-
-            <Form.Group controlId="garage" className="mb-3">
-                <Form.Label>¿Tiene Garage?</Form.Label>
-                <Form.Select
-                value={garage}
-                onChange={(e) => setGarage(e.target.value)}
-                >
-                <option>¿El edificio tiene Garage?</option>
-                <option value="si">Sí</option>
-                <option value="no">No</option>
-                </Form.Select>
-            </Form.Group>
-
-            <Button
-                type="submit"
-                variant="primary"
-                className="w-100"
-                disabled={!formValid}
-            >
-                Crear Propiedad
-            </Button>
-            </Form>
-        </Card.Body>
-        </Card>
+                    Crear Propiedad
+                </Button>
+                </Form>
+            </Card.Body>
+            </Card>
+        </div>
         <Footer />
     </>
   );

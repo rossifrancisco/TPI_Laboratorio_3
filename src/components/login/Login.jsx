@@ -2,20 +2,15 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import Navbar from '../navbarDefault/NavbarDefault';
 import Footer from '../footer/Footer'
-import './Login.css'
 import { useAuthContext } from "../../context/AuthContext";
-import { Button } from "react-bootstrap";
 import Swal from "sweetalert2";
+import { Button, Card, Form } from "react-bootstrap";
 
 const Login = () => {
     const { login, auth, error } = useAuthContext();
     const navigate = useNavigate(); 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-
-    const handleProfile = () => {
-        navigate("/user"); 
-    }
 
     const onSubmitHandler = async (event) => {
         event.preventDefault();
@@ -39,48 +34,52 @@ const Login = () => {
     return (
         <>
             <Navbar />
-            <div className="login-container">
-                {auth.loggedIn ? (
-                    <div>
-                        <h4>Estás logueado como: {auth.firstName} {auth.lastName}</h4>
-                        <Button onClick={handleProfile}>Ir al perfil</Button>
-                    </div>
-                ) : (
-                    <>
-                        <h1 style={{ textAlign: "center", margin: "50px" }}>
-                            Ingrese su cuenta
-                        </h1>
-                        <form onSubmit={onSubmitHandler} className="login">
-                            <label className="field">
-                                <p>Nombre de usuario:</p>
-                                <input
-                                    type="text"
+            <div style={{minHeight: "100vh"}}>
+                <Card className="w-80 mx-auto" style={{ maxWidth: "800px", marginTop: "20px", marginBottom: "20px"}}>
+                    <Card.Header>
+                        <Card.Title>Ingrese su cuenta</Card.Title>
+                    </Card.Header>
+                    <Card.Body>
+                        <Form onSubmit={onSubmitHandler}>
+                            <Form.Group controlId="username" className="mb-3">
+                                <Form.Label>Nombre de usuario</Form.Label>
+                                <Form.Control
+                                    type="string"
+                                    placeholder="Ingrese su nombre de usuario"
                                     value={username}
-                                    onChange={(event) => setUsername(event.target.value)}
-                                    required
+                                    onChange={(e) => setUsername(e.target.value)}
                                 />
-                                {error.username && <p className="error">{error.username}</p>}
-                            </label>
-                            <label className="field">
-                                <p>Contraseña:</p>
-                                <input
-                                    type="password"
+                            </Form.Group>
+
+                            <Form.Group controlId="floor" className="mb-3">
+                                <Form.Label>Contraseña</Form.Label>
+                                <Form.Control
+                                    type="string"
+                                    placeholder="Ingrese su contraseña"
                                     value={password}
-                                    onChange={(event) => setPassword(event.target.value)}
-                                    required
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
-                                {error.password && <p className="error">{error.password}</p>}
-                            </label>
-                            <button type="submit">Ingresar</button>
-                            <button 
-                                style={{ backgroundColor: '#1c55a7'}} 
+                            </Form.Group>
+
+                            <Button
+                                type="submit"
+                                variant="success"
+                                className="w-100"
+                                style={{marginBottom: "20px"}}
+                            >
+                                Ingresar
+                            </Button>
+                            <Button
+                                type="submit"
+                                variant="primary"
+                                className="w-100"
                                 onClick={() => navigate('/SignUp')}
                             >
                                 ¿No tienes una cuenta? Registrate
-                            </button>
-                        </form>
-                    </>
-                )}
+                            </Button>
+                        </Form>
+                    </Card.Body>
+                </Card>
             </div>
             <Footer />
         </>

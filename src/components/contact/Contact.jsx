@@ -54,7 +54,7 @@ const Contact = () => {
   return (
     <>
         <NavbarDefault />
-        <div className="container mt-5">
+        <div className="container mt-5" style={{minHeight: "100vh"}}>
             <h2>Contactate con RentAr</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -108,7 +108,9 @@ const Contact = () => {
                 <button type="submit" className="btn btn-primary" style={{ marginTop: 15 }}>Enviar</button>
             </form>
         </div>
+        <Footer />
     </>
+    
   );
 };
 
