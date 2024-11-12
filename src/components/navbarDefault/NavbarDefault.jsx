@@ -1,4 +1,3 @@
-//import { Navbar } from "react-bootstrap";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { AuthContext } from '../../context/AuthContext';
 import { useContext } from 'react';
@@ -27,11 +26,16 @@ const NavbarDefault = () => {
                             <>
                                 <a className="nav-link" href="/" style={{alignContent: "center"}} >INICIO</a>
                                 <a className="nav-link" href="/Contact" style={{alignContent: "center"}} >CONTACTO</a>
-                               
+
+                                {auth.role === 'Admin' && (
+                                    <a className="nav-link" href="/AdminPanel" style={{alignContent: "center"}} >PANEL DE ADMINISTRADOR</a>
+                                )}
+
                                 {auth.role === 'Owner' && (
                                     <>
                                         <a className="nav-link" href="/CreateBuilding" style={{alignContent: "center"}} >CREAR EDIFICIO</a>
                                         <a className="nav-link" href="/BuildingSelect" style={{alignContent: "center"}} >CREAR DEPARTAMENTO</a>
+                                        <a className="nav-link" href="/OwnProperties" style={{alignContent: "center"}} >MODIFICAR</a>
                                     </>
                                 )}
                                 {auth.role === 'Tenant' && (

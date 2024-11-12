@@ -30,7 +30,7 @@ const BuildingSelect = () => {
             }
         };
 
-        fetchBuildings(); // Llama a la función asíncrona para obtener los edificios
+        fetchBuildings(); 
     }, [auth.userId, getAllBuildings]);
 
     return (

@@ -19,7 +19,7 @@ const AppartmentCard = () => {
   const [appartment, setAppartment] = useState(null);
   const [owner, setOwner] = useState(null);
   const [selectedDate, setSelectedDate] = useState("");
-  const [showModal, setShowModal] = useState(false);  // Estado para mostrar el modal
+  const [showModal, setShowModal] = useState(false); 
 
   useEffect(() => {
     const fetchAppartment = async () => {
@@ -157,7 +157,7 @@ const AppartmentCard = () => {
         <Button
           variant="primary"
           onClick={handleShowModal}
-          disabled={!appartment.isAvailable || auth.role == 'Owner'}
+          disabled={!appartment.isAvailable || auth.role == 'Owner' || auth.role == 'Admin'}
         >
           {appartment.isAvailable ? 'Reservar' : 'No disponible'}
         </Button>
@@ -206,19 +206,19 @@ const AppartmentCard = () => {
                 id="reservationDate"
                 className="form-control"
                 value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}  // Actualiza el estado con la fecha seleccionada
-                min={new Date().toISOString().split("T")[0]}  // Asegura que no se pueda seleccionar una fecha pasada
+                onChange={(e) => setSelectedDate(e.target.value)}  
+                min={new Date().toISOString().split("T")[0]} 
               />
             </div>
             <Button
               variant="secondary"
               onClick={handleReservation}
               block
-              disabled={!selectedDate}  // Deshabilita el botón si no se selecciona una fecha
+              disabled={!selectedDate}  
             >
               Guardar una reserva
             </Button>
-            <Button variant="primary" onClick={handleRent} block>Alquilar ahora</Button>
+            <Button variant="primary" onClick={handleRent} disabled={!auth.loggedIn} block>Alquilar ahora</Button>
           </form>
         </Modal.Body>
       </Modal>

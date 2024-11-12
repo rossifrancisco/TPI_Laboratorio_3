@@ -20,7 +20,7 @@ const Login = () => {
         }
         const response = await login(credentials);
         if (response){
-            navigate("/rent");
+            navigate("/");
         }
         else {
             Swal.fire({
@@ -51,10 +51,10 @@ const Login = () => {
                                 />
                             </Form.Group>
 
-                            <Form.Group controlId="floor" className="mb-3">
+                            <Form.Group controlId="contraseña" className="mb-3">
                                 <Form.Label>Contraseña</Form.Label>
                                 <Form.Control
-                                    type="string"
+                                    type="password"
                                     placeholder="Ingrese su contraseña"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}

@@ -6,7 +6,7 @@ export const BuildingContext = createContext();
 export const useBuildingContext = () => useContext(BuildingContext);
 
 const BuildingContextProvider = ({ children }) => {
-  const URL = "https://localhost:7095/api/"; //aca hay q hacer desde la api .net
+  const URL = "https://localhost:7095/api/";
   const getToken = () => localStorage.getItem("token");
 
   const getAllBuildings = async () => {
@@ -85,11 +85,6 @@ const BuildingContextProvider = ({ children }) => {
       return null;
     }
   };
-  
-  const convertAuthorizedBuilding = () => {
-    
-
-  }
 
   const deleteBuilding = async (id) => {
     try {
@@ -100,7 +95,7 @@ const BuildingContextProvider = ({ children }) => {
           Authorization: `Bearer ${getToken()}`,
         },
       });
-      if (response.status === 204) return true;
+      if (!response.ok) throw new Error(`Error: ${response.status} - ${response.statusText}`);
 
       const data = await response.json();
       return data;
@@ -160,6 +155,26 @@ const BuildingContextProvider = ({ children }) => {
           Authorization: `Bearer ${getToken()}`,
         },
         body: JSON.stringify(building),
+      });
+      if (!response.ok) throw new Error(`Error: ${response.status} - ${response.statusText}`);
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
+  const updateAppartment = async (id, updatedAppartment) => {
+    try {
+      const response = await fetch(URL + `Appartment/update/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify(updatedAppartment),
       });
       if (!response.ok) throw new Error(`Error: ${response.status} - ${response.statusText}`);
 
@@ -243,7 +258,7 @@ const BuildingContextProvider = ({ children }) => {
     deleteAppartment,
     reservation,
     rentAppartment,
-    UpdateAppartment,
+    updateAppartment,
   };
 
   return (

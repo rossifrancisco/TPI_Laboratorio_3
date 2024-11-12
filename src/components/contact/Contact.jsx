@@ -3,6 +3,8 @@ import emailjs from 'emailjs-com';
 import NavbarDefault from '../navbarDefault/NavbarDefault';
 import Swal from 'sweetalert2';
 import Footer from '../footer/Footer';
+import { Button, Card, Form } from "react-bootstrap";
+
 
 const Contact = () => {
     const [formData, setFormData] = useState({
@@ -54,60 +56,68 @@ const Contact = () => {
   return (
     <>
         <NavbarDefault />
-        <div className="container mt-5" style={{minHeight: "100vh"}}>
-            <h2>Contactate con RentAr</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="name">Nombre:</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleNameChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="email">Correo Electrónico:</label>
-                    <input
-                        type="email"
-                        className="form-control"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleEmailChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="phone">Teléfono:</label>
-                    <input
-                        type="tel"
-                        className="form-control"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handlePhoneChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="message">Mensaje:</label>
-                    <textarea
-                        className="form-control"
-                        id="message"
-                        name="message"
-                        rows="4"
-                        value={formData.message}
-                        onChange={handleMessageChange}
-                        required
-                    />
-                </div>
-                <button type="submit" className="btn btn-primary" style={{ marginTop: 15 }}>Enviar</button>
-            </form>
+
+        <div style={{minHeight: "100vh"}}>
+            <Card className="w-80 mx-auto" style={{ maxWidth: "800px", marginTop: "20px", marginBottom: "20px"}}>
+                <Card.Header>
+                    <Card.Title>Contactate con RentAr</Card.Title>
+                </Card.Header>
+                <Card.Body>
+                    <Form onSubmit={handleSubmit}>
+
+                        <Form.Group controlId="nombre" className="mb-3">
+                            <Form.Label>Nombre</Form.Label>
+                            <Form.Control
+                                type="string"
+                                placeholder="Ingrese su nombre"
+                                value={formData.name}
+                                onChange={handleNameChange}
+                            />
+                        </Form.Group>
+
+                        <Form.Group controlId="correo" className="mb-3">
+                            <Form.Label>Correo</Form.Label>
+                            <Form.Control
+                                type="email"
+                                placeholder="Ingrese su email"
+                                value={formData.email}
+                                onChange={handleEmailChange}
+                            />
+                        </Form.Group>
+
+                        <Form.Group controlId="telefono" className="mb-3">
+                            <Form.Label>Telefono</Form.Label>
+                            <Form.Control
+                                type="tel"
+                                placeholder="Ingrese su numero de telefono"
+                                value={formData.phone}
+                                onChange={handlePhoneChange}
+                            />
+                        </Form.Group>
+
+                        <Form.Group controlId="mensaje" className="mb-3">
+                            <Form.Label>Mensaje</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                placeholder="Ingrese su mensaje"
+                                value={formData.message}
+                                onChange={handleMessageChange}
+                            />
+                        </Form.Group>
+
+                        <Button
+                            type="submit"
+                            variant="success"
+                            className="w-100"
+                            style={{marginTop: "20px"}}
+                        >
+                            Registrarse
+                        </Button>
+                    </Form>
+                </Card.Body>
+            </Card>
         </div>
+
         <Footer />
     </>
     

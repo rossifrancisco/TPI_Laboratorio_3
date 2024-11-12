@@ -1,11 +1,7 @@
-import { Button } from "react-bootstrap";
 import BuildingCard from "../BuildingCard/BuildingCard";
-import AppartmentMCard from "../appartmentCard/AppartmentMCard";
 import Navbar from '../navbarDefault/NavbarDefault';
 import Footer from '../footer/Footer';
 import { useState, useEffect } from "react";
-import Form from 'react-bootstrap/Form';
-import useFilterProperties from "../../hooks/useFilterProperties";
 import { useAuthContext } from "../../context/AuthContext";
 import { useBuildingContext } from "../../context/BuildingContext";
 import RentCard from "../rentCard/RentCard";

@@ -23,19 +23,18 @@ const CreateAppartment = () => {
     const formValid = floor && number && description && photos && bathrooms && rooms && price
 
 
-    const [photoUrl, setPhotoUrl] = useState(""); // Para guardar la URL ingresada por el usuario
+    const [photoUrl, setPhotoUrl] = useState(""); 
 
     const addPhotoUrl = (url) => {
-        // Asegurarse de que la URL sea válida (opcional, dependiendo de tus necesidades)
+        
         if (isValidUrl(url)) {
             setPhotos([...photos, url]);
-            setPhotoUrl(""); // Limpiar el campo de URL después de agregarla
+            setPhotoUrl("");
         } else {
             alert("URL no válida");
         }
     };
 
-    // Función para validar si la URL es válida
     const isValidUrl = (url) => {
         try {
             new URL(url);

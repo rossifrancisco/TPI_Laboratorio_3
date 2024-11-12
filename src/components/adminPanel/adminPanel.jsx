@@ -81,6 +81,7 @@ const AdminPanel = () => {
     return (
         <>
             <Navbar />
+            <div style={{minHeight: "100vh"}}>
             <Card className="w-80 mx-auto" style={{ maxWidth: "800px", marginTop: "20px", marginBottom: "20px" }}>
                 <Card.Header>
                     <Card.Title>Buscar y Eliminar Usuario</Card.Title>
@@ -133,6 +134,7 @@ const AdminPanel = () => {
                     </Form>
                 </Card.Body>
             </Card>
+            </div>
             <Footer />
         </>
     );

@@ -6,19 +6,16 @@ import Rent from './components/rent/Rent';
 import CreateAppartment from './components/createAppartment/CreateAppartment';
 import CreateBuilding from './components/createBuilding/CreateBuilding';
 import Private from './components/routes/Private';
-import NotOwner from './components/routes/NotOwner';
+import NotOwner from './components/routes/notOwner';
 import Contact from './components/contact/Contact';
-import { useState } from 'react';
 import AppartmentCard from './components/appartmentCard/AppartmentCard';
 import UserCard from './components/user/UserCard';
-import { useAuthContext } from './context/AuthContext';
-import { useBuildingContext } from './context/BuildingContext';
 import BuildingSelect from './components/buildingSelect/BuildingSelect';
-import OwnProperties from './components/ownProperties/ownProperties';
-import AppartmentSelect from './components/appartmentSelect/AppartmentSelect';
+import OwnProperties from './components/ownProperties/OwnProperties';
 import UpdateAppartment from './components/updateAppartment/UpdateAppartment';
 import UpdateBuilding from './components/UpdateBuilding/UpdateBuilding';
 import AdminPanel from './components/adminPanel/adminPanel';
+import OnlyAdmin from './components/routes/onlyAdmin';
 
 function App() {
   const router = createBrowserRouter([
@@ -28,16 +25,14 @@ function App() {
     { path: '/Contact', element: <Contact /> },
     {
       path: '/Rent', element: (
-        <Private>
-          <Rent  />
-        </Private>
+        <Rent />
       )
     },
     {
       path: "/CreateAppartment/:buildingId",
       element: (
         <NotOwner>
-          <CreateAppartment  />
+          <CreateAppartment />
         </NotOwner>
       ),
     },
@@ -74,18 +69,10 @@ function App() {
       ),
     },
     {
-      path: "/AppartmentSelect",
-      element: (
-        <NotOwner>
-          <AppartmentSelect />
-        </NotOwner>
-      ),
-    },
-    {
       path: "/AppartmentCard/:id",
       element: (
         <Private>
-          <AppartmentCard  />
+          <AppartmentCard />
         </Private>
       ),
     },
@@ -108,9 +95,9 @@ function App() {
     {
       path: '/AdminPanel',
       element: (
-        <NotOwner>
+        <OnlyAdmin>
           <AdminPanel />
-        </NotOwner>
+        </OnlyAdmin>
       )
     },
   ]);

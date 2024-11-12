@@ -38,7 +38,7 @@ const AvatarGenerator = ({ onSave }) => {
             ...prevAuth,
             photo: avatarURL
         }));
-        onSave(avatarURL); // Llama a la función callback con la URL generada
+        onSave(avatarURL); 
     };
 
     return (

@@ -1,13 +1,6 @@
 import { useState } from "react";
 import Navbar from '../navbarDefault/NavbarDefault';
 import Footer from '../footer/Footer'
-import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
-import { Button } from "react-bootstrap";
-import { Form } from "react-bootstrap";
-import AppartmentCard from "../appartmentCard/AppartmentCard";
-import useFilterProperties from "../../hooks/useFilterProperties";
-import { useAuthContext } from "../../context/AuthContext";
 import { useBuildingContext } from "../../context/BuildingContext";
 import { useEffect } from "react";
 import RentCard from "../rentCard/RentCard";
@@ -21,7 +14,7 @@ const AppartmentSelect = ({buildingId}) => {
     useEffect(() => {
         const fetchBuildings = async () => {
             try {
-                const appartments = await getAllAppartments(); // Espera a que la promesa se resuelva
+                const appartments = await getAllAppartments();
                 const filteredAppartments = appartments.filter(a => a.buildingId === buildingId);
                 setBuildingsAppartments(filteredAppartments);
             } catch (error) {
@@ -29,7 +22,7 @@ const AppartmentSelect = ({buildingId}) => {
             }
         };
 
-        fetchBuildings(); // Llama a la función asíncrona para obtener los edificios
+        fetchBuildings(); 
     }, [buildingId, getAllAppartments]);
 
     return (
@@ -43,7 +36,7 @@ const AppartmentSelect = ({buildingId}) => {
                         ubication={build.ubication}
                         address={build.address}
                         bathrooms={build.bathrooms}   
-                        rooms={build.rooms}   //
+                        rooms={build.rooms} 
                         garage={build.garage}
                         backyard={build.backyard}
                         pictures={build.pictures}

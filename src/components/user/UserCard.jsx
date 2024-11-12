@@ -20,7 +20,7 @@ const UserCard = () => {
     const [photo, setPhoto] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [showAvatarEditor, setShowAvatarEditor] = useState(false);  // Añadido para abrir el modal de avatar
+    const [showAvatarEditor, setShowAvatarEditor] = useState(false);
 
     const token = localStorage.getItem('token');
     let user = {};
@@ -45,11 +45,9 @@ const UserCard = () => {
         fetchUser();
     }, [token]);
 
-    // Al enviar el formulario, actualizar auth en el contexto
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validar que los campos no estén vacíos
         if (username.trim().length === 0 || email.trim().length === 0 ||
             firstName.trim().length === 0 || lastName.trim().length === 0) {
             Swal.fire({
@@ -79,12 +77,12 @@ const UserCard = () => {
 
         let finalPassword = newPassword.trim() === '' ? oldPassword : newPassword;
 
-        console.log(finalPassword, 'Final Password'); // Verifica que finalPassword tenga el valor esperado
+        console.log(finalPassword, 'Final Password'); 
 
         try {
             let updatedUser = {
                 username: username,
-                password: finalPassword, // Utilizamos finalPassword en lugar de newPassword
+                password: finalPassword, 
                 name: firstName,
                 lastName: lastName,
                 email: email,
@@ -125,7 +123,7 @@ const UserCard = () => {
             });
         }
 
-        setIsOpen(false);  // Cerrar el modal después de la actualización
+        setIsOpen(false); 
     };
 
     const handleSaveAvatar = (url) => {
@@ -133,12 +131,13 @@ const UserCard = () => {
     };
 
     const handleAvatarClick = () => {
-        setShowAvatarEditor(true);  // Abrir el modal del avatar
+        setShowAvatarEditor(true); 
     };
 
     return (
         <>
             <NavbarDefault />
+            <div style={{minHeight: "100vh"}}>
             <Card.Header className='-100 max-w-md mx-auto mt-5 d-flex justify-content-center align-items-center'>
                 <h5>Perfil de Usuario</h5>
             </Card.Header>
@@ -193,7 +192,7 @@ const UserCard = () => {
                                     src={photo}
                                     alt="Avatar"
                                     style={{ width: "100px", borderRadius: "50%", cursor: "pointer" }}
-                                    onClick={handleAvatarClick}  // Abrir el modal para editar avatar
+                                    onClick={handleAvatarClick}  
                                 />
                                 <p>Haz clic para personalizar tu avatar</p>
                             </div>
@@ -214,17 +213,17 @@ const UserCard = () => {
                                         type="text"
                                         name="username"
                                         value={username}
-                                        onChange={(e) => setUsername(e.target.value)}  // Corregido el onChange
+                                        onChange={(e) => setUsername(e.target.value)}  
                                     />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="newPassword">
                                     <Form.Label>Nueva contraseña</Form.Label>
                                     <Form.Control
-                                        type="password"  // Cambié el tipo a 'password' para mayor seguridad
+                                        type="password" 
                                         name="newPassword"
                                         placeholder='Dejar vacío si no se quiere cambiar'
                                         value={newPassword}
-                                        onChange={(e) => setNewPassword(e.target.value)}  // Corregido el onChange
+                                        onChange={(e) => setNewPassword(e.target.value)} 
                                     />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="email">
@@ -233,7 +232,7 @@ const UserCard = () => {
                                         type="email"
                                         name="email"
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)}  // Corregido el onChange
+                                        onChange={(e) => setEmail(e.target.value)}  
                                     />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="firstName">
@@ -242,7 +241,7 @@ const UserCard = () => {
                                         type="text"
                                         name="firstName"
                                         value={firstName}
-                                        onChange={(e) => setFirstName(e.target.value)}  // Corregido el onChange
+                                        onChange={(e) => setFirstName(e.target.value)} 
                                     />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="lastName">
@@ -251,16 +250,16 @@ const UserCard = () => {
                                         type="text"
                                         name="lastName"
                                         value={lastName}
-                                        onChange={(e) => setLastName(e.target.value)}  // Corregido el onChange
+                                        onChange={(e) => setLastName(e.target.value)} 
                                     />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="oldPassword">
                                     <Form.Label>Ingrese su contraseña para confirmar cambios</Form.Label>
                                     <Form.Control
-                                        type="text"  // Cambié el tipo a 'password' para mayor seguridad
+                                        type="text"  
                                         name="oldPassword"
                                         value={oldPassword}
-                                        onChange={(e) => setOldPassword(e.target.value)}  // Corregido el onChange
+                                        onChange={(e) => setOldPassword(e.target.value)}  
                                         required="required"
                                     />
                                 </Form.Group>
@@ -273,6 +272,7 @@ const UserCard = () => {
                     </Modal>
                 </Card.Body>
             </Card>
+            </div>
             <Footer />
         </>
     )

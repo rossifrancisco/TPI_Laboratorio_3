@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 
 const UpdateAppartment = () => {
     const { appartmentId } = useParams();
-    const { UpdateAppartment, getAppartmentById, deleteAppartment } = useBuildingContext();
+    const { updateAppartment, getAppartmentById, deleteAppartment } = useBuildingContext();
     const [appartment, setAppartment] = useState(null);
 
     const [floor, setFloor] = useState(0);
@@ -80,7 +80,7 @@ const UpdateAppartment = () => {
             price: price,
         };
 
-        const response = UpdateAppartment(appartmentId, appartmentData);
+        const response = updateAppartment(appartmentId, appartmentData);
         if (response) {
             Swal.fire({
                 title: 'Propiedad actualizada',
@@ -96,6 +96,7 @@ const UpdateAppartment = () => {
                 confirmButtonText: 'Aceptar'
             });
         }
+        
     };
 
     const DeleteHandler =() => {
@@ -125,7 +126,7 @@ const UpdateAppartment = () => {
                             />
                         </Form.Group>
 
-                        <Form.Group controlId="floor" className="mb-3">
+                        <Form.Group controlId="number" className="mb-3">
                             <Form.Label>Número de depto</Form.Label>
                             <Form.Control
                                 type="number"

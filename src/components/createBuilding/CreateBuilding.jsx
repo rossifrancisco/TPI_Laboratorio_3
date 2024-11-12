@@ -19,10 +19,10 @@ const CreateBuilding = () => {
     const submitBuildingHandler = (event) => {
         event.preventDefault();
         const buildingData = {
-            ubication: locality,   // Asumiendo que 'locality' es lo que quieres usar para 'ubication'
+            ubication: locality,   
             address: address,
-            ownerId: auth.userId, // O el ID de usuario correspondiente
-            garage: garage === 'si' ? true : false, // Convierte "si" o "no" a booleano
+            ownerId: auth.userId, 
+            garage: garage === 'si' ? true : false,
             backyard: backyard === 'si' ? true : false,
         };
     

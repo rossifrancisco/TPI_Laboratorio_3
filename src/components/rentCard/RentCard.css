@@ -47,3 +47,22 @@
     font-size: 16px;
     font-weight: bold;
 }
+
+.rent-card-info .description {
+    position: relative;
+    max-height: 80px;
+    overflow: hidden;
+    animation: scrollText 8s linear infinite;
+}
+
+@keyframes scrollText {
+    0% {
+        top: 0;
+    }
+    50% {
+        top: -100%;
+    }
+    100% {
+        top: 0;
+    }
+}

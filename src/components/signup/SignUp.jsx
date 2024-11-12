@@ -5,8 +5,8 @@ import './SignUp.css';
 import { useAuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { Button } from "react-bootstrap";
-import { Form } from "react-bootstrap";
+import { Button, Card, Form } from "react-bootstrap";
+
 
 const SignUp = () => {
     const {register, auth, logout} = useAuthContext();
@@ -73,64 +73,65 @@ const SignUp = () => {
     return (
         <>
             <Navbar />
-            {
-                auth.loggedIn ? (
-                    <div className="login-container">
-                        <div>
-                            <h4>Estás logueado como: {auth.firstName} {auth.lastName}</h4>
-                            <Button onClick={logout}>Cerrar sesión</Button>
-                        </div>
-                    </div>
-                      
-                ) : (
-                    <div className="signup-container">
-                        <h1 style={{ textAlign: "center", margin: "50px" }}>Ingrese sus datos</h1>
-                        <form onSubmit={onSubmitHandler} className="signup">
-                            <label>
-                                <p>Nombre:</p>
-                                <input
-                                    type="text"
+
+            <div style={{minHeight: "100vh"}}>
+                <Card className="w-80 mx-auto" style={{ maxWidth: "800px", marginTop: "20px", marginBottom: "20px"}}>
+                    <Card.Header>
+                        <Card.Title>Ingrese sus datos</Card.Title>
+                    </Card.Header>
+                    <Card.Body>
+                        <Form onSubmit={onSubmitHandler}>
+
+                            <Form.Group controlId="nombre" className="mb-3">
+                                <Form.Label>Nombre</Form.Label>
+                                <Form.Control
+                                    type="string"
+                                    placeholder="Ingrese su nombre"
                                     value={firstName}
-                                    onChange={(event) => setFirstName(event.target.value)}
-                                    required
+                                    onChange={(e) => setFirstName(e.target.value)}
                                 />
-                            </label>
-                            <label>
-                                <p>Apellido: </p>
-                                <input
-                                    type="text"
+                            </Form.Group>
+
+                            <Form.Group controlId="apellido" className="mb-3">
+                                <Form.Label>Apellido</Form.Label>
+                                <Form.Control
+                                    type="string"
+                                    placeholder="Ingrese su apellido"
                                     value={lastName}
-                                    onChange={(event) => setLastName(event.target.value)}
-                                    required
+                                    onChange={(e) => setLastName(e.target.value)}
                                 />
-                            </label>
-                            <label>
-                                <p>Nombre de Usuario: </p>
-                                <input
-                                    type="text"
+                            </Form.Group>
+
+                            <Form.Group controlId="username" className="mb-3">
+                                <Form.Label>Nombre de usuario</Form.Label>
+                                <Form.Control
+                                    type="string"
+                                    placeholder="Ingrese su nombre de usuario"
                                     value={userName}
-                                    onChange={(event) => setUserName(event.target.value)}
-                                    required
+                                    onChange={(e) => setUserName(e.target.value)}
                                 />
-                            </label>
-                            <label>
-                                <p>Email: </p>
-                                <input
-                                    type="email"
+                            </Form.Group>
+
+                            <Form.Group controlId="email" className="mb-3">
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control
+                                    type="string"
+                                    placeholder="Ingrese su email"
                                     value={email}
-                                    onChange={(event) => setEmail(event.target.value)}
-                                    required
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
-                            </label>
-                            <label>
-                                <p>Contraseña: </p>
-                                <input
-                                    type="password"
+                            </Form.Group>
+
+                            <Form.Group controlId="contraseña" className="mb-3">
+                                <Form.Label>Contraseña</Form.Label>
+                                <Form.Control
+                                    type="string"
+                                    placeholder="Ingrese su contraseña"
                                     value={passWord}
-                                    onChange={(event) => setPassWord(event.target.value)}
-                                    required
+                                    onChange={(e) => setPassWord(e.target.value)}
                                 />
-                            </label>
+                            </Form.Group>
+
                             <Form.Group controlId="roleSelect">
                                 <Form.Control
                                     as="select"
@@ -143,11 +144,19 @@ const SignUp = () => {
                                     <option value="Owner">Propietario</option>
                                 </Form.Control>
                             </Form.Group>
-                            <button type="submit"> Registrarse </button>
-                        </form>
-                    </div>
-                )
-            }
+
+                            <Button
+                                type="submit"
+                                variant="success"
+                                className="w-100"
+                                style={{marginTop: "20px"}}
+                            >
+                                Registrarse
+                            </Button>
+                        </Form>
+                    </Card.Body>
+                </Card>
+            </div>
             <Footer />
         </>
     );
