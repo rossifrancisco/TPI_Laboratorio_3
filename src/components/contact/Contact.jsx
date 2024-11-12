@@ -111,7 +111,7 @@ const Contact = () => {
                             className="w-100"
                             style={{marginTop: "20px"}}
                         >
-                            Registrarse
+                            Enviar
                         </Button>
                     </Form>
                 </Card.Body>
